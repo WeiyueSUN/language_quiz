@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>测测您小孩的英语水平相当于多大的美国小孩</title>
+
+
+</head>
+<body bgcolor=#ffffff>
+<h1>测测您小孩的英语水平相当于多大的美国小孩</h1>
+<h3>说明： 请您和您的孩子共同完成，一会屏幕上将显示4张图片，电脑会读出一个英文单词，请您的孩子指出哪个图最符合这个单词的意思，然后由您选择这个单词后，点下一题。[在此处补充说明]</h3>
+
+<form action="{{ url_for('showIndex')}}" method = 'post'>
+
+为了测试的准确性，请您填写您孩子的几个基本信息，我们会选择更合理的题目。
+
+<P>1. 您孩子的性别：<BR>
+<input type="radio" name="is_male" value="m" placeholder="is_male">男<BR>
+<input type="radio" name="is_female" value="f" placeholder="is_female">女<BR>
+</p>
+<BR>
+
+<P>2. 您孩子的年龄:<BR>
+<select name="age">
+<option value="1">1岁及以下</option>
+<option value="1.5">1岁半</option>
+<option value="2">2岁</option>
+<option value="2.5">2岁半</option>
+<option value="3">3岁</option>
+<option value="3.5">3岁半</option>
+<option value="4">4岁</option>
+<option value="4.5">4岁半</option>
+<option value="5">5岁</option>
+<option value="5.5">5岁半</option>
+<option value="6">6岁</option>
+<option value="6.5">6岁半及以上</option>
+</select>
+
+</p>
+<BR>
+
+<P>3. 您的孩子曾在哪几种情景下接触过英语:<BR>
+<input type="checkbox" name="edu1" placeholder="edu1">课外英语辅导班<BR>
+<input type="checkbox" name="edu2" placeholder="edu2">幼儿园英语课<BR>
+<input type="checkbox" name="edu3" placeholder="edu3">使用英语的其他课外课程或活动<BR>
+<input type="checkbox" name="edu4" placeholder="edu4">海外生活经历（连续三个月以上）<BR>
+<input type="checkbox" name="edu5" placeholder="edu5">海外短期出游<BR>
+<input type="checkbox" name="edu6" placeholder="edu6">与父母或家人的日常交流<BR>
+<input type="checkbox" name="edu7" placeholder="edu7">英语媒体（书籍、音乐、电影等）<BR>
+<BR>
+</p>
+<BR>
+
+<input type="reset" value="重置">
+<br>
+
+<br>
+<input type="submit" value="开始测试">
+</form>
+
+</body>
+
+</html>
+
+
+
+
+
+

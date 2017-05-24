@@ -1,101 +1,135 @@
 $(document).ready(function () {
 
-var questionNumber=0;
-var questionBank=new Array();
-var stage="#game1";
-var stage2=new Object;
-var questionLock=false;
-var numberOfQuestions;
-var score=0;
+	var qNumber=0;
+	var qbank=new Array();
+	var opArray=new Array();
+	var myloader="activity.json";
+	var stage="#game1";
+	var stage2=new Object;
+	var qlock=false;
+	var numberOfQuestions;
+	var score=0;
+
+	fillDB();
+
+	function fillDB(){
 
 
 
+		$.getJSON(myloader, function(data) {
 
-$.getJSON('activity.json', function(data) {
+			//console.log(data);
+			for(i=0;i<data.quizlist.length;i++){
 
-for(i=0;i<data.quizlist.length;i++){
-			questionBank[i]=new Array;
-			questionBank[i][0]=data.quizlist[i].question;
-			questionBank[i][1]=data.quizlist[i].option1;
-			questionBank[i][2]=data.quizlist[i].option2;
-			questionBank[i][3]=data.quizlist[i].option3;
-}
-numberOfQuestions=questionBank.length;
-//alert(questionBank);
+				qbank[i]=new Array;
+				qbank[i][0]=data.quizlist[i].question;
+				qbank[i][1]=data.quizlist[i].option1;
+				qbank[i][2]=data.quizlist[i].option2;
+				qbank[i][3]=data.quizlist[i].option3;
+				qbank[i][4]=data.quizlist[i].option4;
+				qbank[i][5]=data.quizlist[i].voice;
+
+			}
+			numberOfQuestions=qbank.length;
+			console.log(qbank);
+			//alert(qbank);
+
+			displayQuestion();
 
 
-displayQuestion();
-})//gtjson
+		})//gtjson
 
-
-
-
-function displayQuestion(){
- var rnd=Math.random()*3;
-rnd=Math.ceil(rnd);
- var q1;
- var q2;
- var q3;
-
-if(rnd==1){q1=questionBank[questionNumber][1];q2=questionBank[questionNumber][2];q3=questionBank[questionNumber][3];}
-if(rnd==2){q2=questionBank[questionNumber][1];q3=questionBank[questionNumber][2];q1=questionBank[questionNumber][3];}
-if(rnd==3){q3=questionBank[questionNumber][1];q1=questionBank[questionNumber][2];q2=questionBank[questionNumber][3];}
-
-$(stage).append('<div class="questionText">'+questionBank[questionNumber][0]+'</div><div id="1" class="option">'+q1+'</div><div id="2" class="option">'+q2+'</div><div id="3" class="option">'+q3+'</div>');
-
-$('.option').click(function(){
-  if(questionLock==false){questionLock=true;
-  //correct answer
-  if(this.id==rnd){
-   $(stage).append('<div class="feedback1">CORRECT</div>');
-   score++;
-   }
-  //wrong answer
-  if(this.id!=rnd){
-   $(stage).append('<div class="feedback2">WRONG</div>');
-  }
-  setTimeout(function(){changeQuestion()},1000);
- }})
-
-}//display question
+	}//filldb
 
 
 
 
 
 
-function changeQuestion(){
+	function generateRndSeq(n){
 
-questionNumber++;
+		var A = new Array;
+		var rnd;
+		for (var i = 0; i < n; i++){
+			A[i] = i + 1;
+		}
+		for (var i = 0; i < n - 1; i++) {
+			rnd = Math.random() * (n - i);
+			rnd = Math.floor(rnd);
+			temp = A[i];
+			A[i] = A[rnd+i];
+			A[rnd+i] = temp;
+		}
+		return A;
+	}
 
-if(stage=="#game1")
-	{stage2="#game1";stage="#game2";}
-else
-	{stage2="#game2";stage="#game1";}
+	function displayQuestion(){
 
-if(questionNumber<numberOfQuestions)
-	{displayQuestion();}
-else
-	{displayFinalSlide();}
+		var seq = generateRndSeq(4);
+		//console.log(q);
+		var ansid;
+		var s = '<div class="questionText">' + qbank[qNumber][0] + '</div>';
+		for (var i = 0; i < 4; i++) {
+			if (seq[i] == 1) {ansid = i;}
+			s = s + '<div id="' + i + '" class="pix"><img src="img/' + qbank[qNumber][seq[i]] + '"></div>';
 
-$(stage2).animate({"right": "+=800px"},"slow", function() {$(stage2).css('right','-800px');$(stage2).empty();});
-$(stage).animate({"right": "+=800px"},"slow", function() {questionLock=false;});
+		}
 
-}//change question
+		var audio = new Audio("/voice/" + qbank[qNumber][5]);
+		audio.play();
+
+		//console.log(s);
+		$(stage).append(s);
+		$('.pix').click(function(){
+			if(qlock==false){qlock=true;
+				//correct answer
+				if(this.id==ansid){
+					$(stage).append('<div class="feedback1">CORRECT</div>');
+					score++;
+				}
+				//wrong answer
+				if(this.id!=ansid){
+					$(stage).append('<div class="feedback2">WRONG</div>');
+
+
+				}
+
+				setTimeout(function(){changeQuestion()},1000);
+
+			}})
+
+
+
+	}//display question
 
 
 
 
-function displayFinalSlide(){
 
-$(stage).append('<div class="questionText">You have finished the quiz!<br><br>Total questions: '+numberOfQuestions+'<br>Correct answers: '+score+'</div>');
+	function changeQuestion(){
 
-}//display final slide
+		qNumber++;
+
+		if(stage=="#game1"){stage2="#game1";stage="#game2";}
+		else{stage2="#game2";stage="#game1";}
+
+		if(qNumber<numberOfQuestions){displayQuestion();}else{displayFinalSlide();}
+
+		$(stage2).animate({"right": "+=800px"},"slow", function() {$(stage2).css('right','-800px');$(stage2).empty();});
+		$(stage).animate({"right": "+=800px"},"slow", function() {qlock=false;});
+	}//change question
+
+
+
+
+	function displayFinalSlide(){
+
+		$(stage).append('<div class="questionText">You have finished the quiz!<br><br>Total questions: '+numberOfQuestions+'<br>Correct answers: '+score+'</div>');
+
+	}//display final slide
 
 
 
 
 
-
-
-	});//doc ready
+});//doc ready

@@ -1,22 +1,28 @@
 {"quizlist":[
 
 	{
-	"question":"Portuguese is spoken in _______",
-	"option1":"Brazil",
-	"option2":"Argentina",
-	"option3":"Ecuador"
+	"question":"请点击dog图片",
+	"option1":"dog.jpg",
+	"option2":"ball.jpg",
+	"option3":"dark.jpg",
+	"option4":"doll.jpg",
+	"voice":"dog.mp3"
 	},
 	{
-	"question":"What is the capital of Peru?",
-	"option1":"Lima",
-	"option2":"Bogota",
-	"option3":"San Juan"
+	"question":"请点击door图片",
+	"option1":"door.jpg",
+	"option2":"don't.jpg",
+	"option3":"duck.jpg",
+	"option4":"please.jpg",
+	"voice":"door.mp3"
 	},
 	{
-	"question":"Which country is long and thin?",
-	"option1":"Chile",
-	"option2":"Uruguay",
-	"option3":"Colombia"
+	"question":"请点击hurt图片",
+	"option1":"hurt.jpg",
+	"option2":"kiss.jpg",
+	"option3":"kick.jpg",
+	"option4":"wait.jpg",
+	"voice":"hurt.mp3"
 	}
 
 ]
