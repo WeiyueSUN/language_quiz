@@ -71,7 +71,7 @@ $(document).ready(function () {
 		var s = '<div class="questionText">' + qbank[qNumber][0] + '</div>';
 		for (var i = 0; i < 4; i++) {
 			if (seq[i] == 1) {ansid = i;}
-			s = s + '<div id="' + i + '" class="pix"><img src=' + qbank[qNumber][seq[i]] + '"resource/img/"></div>';
+			s = s + '<div id="' + i + '" class="pix"><img src=' + qbank[qNumber][seq[i]] + '"../resource/img"></div>';
 
 		}
 
