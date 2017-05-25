@@ -31,8 +31,7 @@ class Child(Base):
 
     id = Column(Integer, primary_key=True)
     url = Column(String(20))
-    is_male = Column(Integer)
-    is_female = Column(Integer)
+    sex = Column(String(2))
     age = Column(String(5))
     edu1 = Column(Integer)
     edu2 = Column(Integer)
@@ -44,12 +43,12 @@ class Child(Base):
 
 
     num_ans = Column(Integer)
-    word_id1 = Column(Integer)
-    choose_id1 = Column(Integer)
-    word_id2 = Column(Integer)
-    is_correct2 = Column(Integer)
-    word_id3 = Column(Integer)
-    is_correct3 = Column(Integer)
+    q1 = Column(Integer)
+    ans1 = Column(Integer)
+    q2 = Column(Integer)
+    ans2 = Column(Integer)
+    q3 = Column(Integer)
+    ans3 = Column(Integer)
     def __init__(self):
         self.num_ans = 0
 
@@ -58,9 +57,22 @@ class Child(Base):
         """Return object data in easily serializeable format"""
         return {
             'id': self.id,
-            'is_male': self.is_male,
-            'is_female': self.is_female,
-            'age': self.age
+            'sex': self.sex,
+            'age': self.age,
+            'edu1':self.edu1,
+            'edu2':self.edu2,
+            'edu3':self.edu3,
+            'edu4':self.edu4,
+            'edu5':self.edu5,
+            'edu6':self.edu6,
+            'edu7':self.edu7,
+            'q1':self.q1,
+            'ans1':self.ans1,
+            'q2':self.q2,
+            'ans2':self.ans2,
+            'q3':self.q3,
+            'ans3':self.ans3,
+            'num_ans':self.num_ans
         }
         '''
 

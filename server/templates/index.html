@@ -8,13 +8,13 @@
 <h1>测测您小孩的英语水平相当于多大的美国小孩</h1>
 <h3>说明： 请您和您的孩子共同完成，一会屏幕上将显示4张图片，电脑会读出一个英文单词，请您的孩子指出哪个图最符合这个单词的意思，然后由您选择这个单词后，点下一题。[在此处补充说明]</h3>
 
-<form action="{{ url_for('showIndex')}}" method = 'post'>
+<form action="{{ url_for('wordTest')}}" method = 'post'>
 
 为了测试的准确性，请您填写您孩子的几个基本信息，我们会选择更合理的题目。
 
 <P>1. 您孩子的性别：<BR>
-<input type="radio" name="is_male" value="m" placeholder="is_male">男<BR>
-<input type="radio" name="is_female" value="f" placeholder="is_female">女<BR>
+<input type="radio" name="sex" value="m">男<BR>
+<input type="radio" name="sex" value="f">女<BR>
 </p>
 <BR>
 

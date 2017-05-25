@@ -12,7 +12,7 @@ questionData = pd.read_csv("questionData.csv")
 print questionData
 for i in questionData.index:
     question = Question()
-    print questionData['correct']
+    #print questionData['correct']
     question.correct = questionData['correct'][i]
     question.wrong1 = questionData['wrong1'][i]
     question.wrong2 = questionData['wrong2'][i]

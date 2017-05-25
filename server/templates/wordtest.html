@@ -4,10 +4,23 @@
     <title>词汇量测试</title>
 </head>
 <body>
-<form action="" method="post">
-    <input type="radio" name="1">
-    <img src="/img/dog.jpg">
-    <input type="radio" name="2" value="/img/dog.jpg">
+<script src="/1/controller.js"></script>
+<form action="#" method="post">
+        <input type="radio" name="answer" value=1>
+        <img src="/1/img/{{question.correct}}.jpg" width="200px"/>
+
+        <input type="radio" name="answer" value=2>
+        <img src="/1/img/{{question.wrong1}}.jpg" width="200px"/>
+<br>
+        <input type="radio" name="answer" value=3>
+        <img src="/1/img/{{question.wrong2}}.jpg" width="200px"/>
+
+        <input type="radio" name="answer" value=4>
+        <img src="/1/img/{{question.wrong3}}.jpg" width="200px"/>
+<br>
+childID:<input type="text" name="childID" value={{childID}}><br>
+
+qID:<input type="text" name="qID" value={{qID}}><br>
     <input type="submit" value="下一题">
 </form>
 

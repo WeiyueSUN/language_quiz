@@ -3,15 +3,18 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Question, Child
 from flask import send_file
-app = Flask(__name__)
+#from flask.ext.images import resized_img_src, Images
 
+
+app = Flask(__name__, static_folder='/vagrant/project/1')
 engine = create_engine('sqlite:///languageData.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-
+#app.secret_key = 'monkey'
+#images = Images(app)
 
 
 @app.route('/child/JSON')
@@ -39,52 +42,98 @@ def get_my_ip():
 
 @app.route("/img", methods=["GET"])
 def show_img():
-    return send_file('/img/dog.jpg', mimetype='image/jpg')
+    return send_file('./img/dog.jpg', mimetype='image/jpg')
+
+@app.route("/q", methods=["GET"])
+def showQ():
+    questions = session.query(Question).all()
+    return jsonify(questions=[q.serialize for q in questions])
+
+@app.route("/child", methods=["GET"])
+def showChild():
+    children = session.query(Child).all()
+    return jsonify(children=[child.serialize for child in children])
 
 @app.route('/', methods=['GET','POST'])
 def showIndex():
 
     print 'ip: ', request.access_route
-    if request.method == 'POST':
-        print "post in"
-        newchild = Child()
-        if request.form.get('is_male'):
-            newchild.is_male = 1
-        if request.form.get('is_female'):
-            newchild.is_female = 1
-        if request.form.get('age'):
-            newchild.age = request.form.get('age')
-        if request.form.get('edu1'):
-            newchild.edu1 = 1
-        if request.form.get('edu2'):
-            newchild.edu2 = 1
-        if request.form.get('edu3'):
-            newchild.edu3 = 1
-        if request.form.get('edu4'):
-            newchild.edu4 = 1
-        if request.form.get('edu5'):
-            newchild.edu5 = 1
-        if request.form.get('edu6'):
-            newchild.edu6 = 1
-        if request.form.get('edu7'):
-            newchild.edu7 = 1
 
-        session.add(newchild)
-        session.commit()
-        print "create a new child, id = ", newchild.id
-        return redirect(url_for('wordTest'))
+    return render_template('index.html')
+
+
+
+@app.route('/1', methods=['GET', 'POST'])
+def wordTest():
+    if request.method == 'POST':
+
+        if request.form.get('age'):
+
+            print "post in"
+            newchild = Child()
+            if request.form.get('sex'):
+                newchild.sex = request.form.get('sex')
+            if request.form.get('age'):
+                newchild.age = request.form.get('age')
+            if request.form.get('edu1'):
+                newchild.edu1 = 1
+            if request.form.get('edu2'):
+                newchild.edu2 = 1
+            if request.form.get('edu3'):
+                newchild.edu3 = 1
+            if request.form.get('edu4'):
+                newchild.edu4 = 1
+            if request.form.get('edu5'):
+                newchild.edu5 = 1
+            if request.form.get('edu6'):
+                newchild.edu6 = 1
+            if request.form.get('edu7'):
+                newchild.edu7 = 1
+
+            session.add(newchild)
+            session.commit()
+            print "create a new child, id = ", newchild.id
+            return render_template('wordtest.html', question=session.query(Question).filter_by(id=1).one(), qID=1, childID=newchild.id)
+
+        else:
+            print 222222
+            answer = request.form.get('answer')
+
+            childID = int(request.form.get('childID'))
+            qID = int(request.form.get('qID'))
+            print answer
+            updateChild = session.query(Child).filter_by(id=childID).one()
+            num_ans = updateChild.num_ans + 1
+            if num_ans == 1:
+                updateChild.ans1 = answer
+                updateChild.q1 = qID
+            elif num_ans == 2:
+                updateChild.ans2 = answer
+                updateChild.q2 = qID
+            elif num_ans == 3:
+                updateChild.ans3 = answer
+                updateChild.q3 = qID
+
+            updateChild.num_ans = num_ans
+            session.add(updateChild)
+            session.commit()
+            if num_ans == 3:
+                return redirect(url_for('wordTestResult'))
+            else:
+                return render_template('wordtest.html', question=session.query(Question).filter_by(id=qID+1).one(), qID=qID+1, childID=childID)
+
 
     else:
-        return render_template('index.html')
 
+        childID = request.form.get('childID')
+        qID = request.form.get('qID')
+        question = session.query(Question).filter_by(id=qID).one()
+        print question.correct
+        return render_template('wordtest.html', question=question, qID=qID, childID=childID)
 
-
-@app.route('/1/1/', methods=['GET', 'POST'])
-def wordTest():
-    return render_template('wordtest.html')
-
-# Edit a restaurant
-
+@app.route('/2/', methods=['GET', 'POST'])
+def wordTestResult():
+    return render_template('wordTestResult.html')
 
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
