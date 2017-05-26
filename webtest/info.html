@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>初步信息确认</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="vendor/iCheck/skins/flat/red.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/info.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">TEST</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">联系我们</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover" style="padding-top: 50px;">
+                <h3 align="center">我们将收集孩子的部分信息，<br>以便进行更好的评估。<br>不会涉及个人隐私。</h3>
+                <br>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-xs-5" style="font-size: 18px;">出生年月：</label>
+                        <div class="form-inline col-xs-7">
+                            <select id="age" class="selectpicker" data-width="fit" name="year" style="width: auto">
+                                <option>0.5</option>
+                                <option>1</option>
+                                <option>1.5</option>
+                                <option>2</option>
+                                <option>2.5</option>
+                            </select>
+                            <label> 岁 </label>
+                            <!--
+                            <select id="month" class="selectpicker" data-width="fit" name="month" style="width: auto">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                            </select>
+                            <label> 月 </label>-->
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label col-xs-5" style="font-size: 18px;">性别：</label>
+                        <div class="form-inline col-xs-7" style="padding-top: 7px;">
+                            <input id="sex" type="radio" name="iCheck" checked> 男
+                            <input type="radio" name="iCheck"> 女
+                        </div>
+                    </div>
+                    <br>
+                    <div align="center">
+                        <label class="col-xs-12" style="text-align:center;font-size: 18px;">在以下哪几种情形下接触过英语？</label>
+                        <br><br>
+                        <ul class="list-group" style="width:80%;color: black; text-shadow: 0 1px 3px rgba(255, 255, 255, .5);">
+                            <li class="list-group-item"><input id="edu1" type="checkbox" name="iCheck"> &nbsp;课外英语辅导班</li>
+                            <li class="list-group-item"><input id="edu2" type="checkbox" name="iCheck"> &nbsp;幼儿园英语课</li>
+                            <li class="list-group-item"><input id="edu3" type="checkbox" name="iCheck"> &nbsp;海外生活经历（3个月以上）</li>
+                            <li class="list-group-item"><input id="edu4" type="checkbox" name="iCheck"> &nbsp;与家人用英语日常交流</li>
+                            <li class="list-group-item"><input id="edu5" type="checkbox" name="iCheck"> &nbsp;英语媒体（书籍、电影等）</li>
+                            <li class="list-group-item"><input id="edu6" type="checkbox" name="iCheck"> &nbsp;课外英语辅导班</li>
+                            <li class="list-group-item"><input id="edu7" type="checkbox" name="iCheck"> &nbsp;课外英语辅导班</li>
+                        </ul>
+                    </div>
+
+                    <div align="center">
+                        <button type="button" onclick="submit();" class="btn btn-default btn-lg">继续</button>
+                    </div>
+                    <br>
+                </form>
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner" style="text-align: center">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="vendor/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-red',
+            radioClass: 'iradio_flat-red',
+            increaseArea: '20%' // optional
+        });
+
+    });
+
+    submit = function() {
+        var age = $('#age').val();
+        var sex = 'f';
+        if($('#sex').is(':checked')) {
+            sex = 'm';
+        }
+        var edu1 = '0';
+        var edu2 = '0';
+        var edu3 = '0';
+        var edu4 = '0';
+        var edu5 = '0';
+        var edu6 = '0';
+        var edu7 = '0';
+        var json_data = {
+            'age':age,
+            'sex':sex,
+            'edu1': edu1,
+            'edu2': edu2,
+            'edu3': edu3,
+            'edu4': edu4,
+            'edu5': edu5,
+            'edu6': edu6,
+            'edu7': edu7
+        };
+        $.ajax('/begin', json_data);
+    } 
+</script>
+</body>
+</html>

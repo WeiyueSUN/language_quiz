@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>初步信息确认</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="vendor/iCheck/skins/flat/red.css" rel="stylesheet">
+    <link href="vendor/buttons/buttons.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/info.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">TEST</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">联系我们</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover">
+                <h3 align="center">请选择与单词相匹配的图片。<br>点击喇叭图标进行朗读。</h3>
+                <br>
+                <div align="center">
+                    <h3>dog</h3>
+                </div>
+                <br>
+                <div align="center">
+                    <button type="button" class="button button-3d button-pill button-large" id="play_music">
+                        <span id="music_label">音频加载中...</span>
+                    </button>
+                </div>
+                <br>
+                <audio id="music_src" hidden>您的设备不支持audio标签播放。</audio>
+                <br>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6" style="text-align: center">
+                            <a href="javascript:void(0)" onclick="submit(0);">
+                                <img class="img-rounded" src="resource/img/dog.jpg" height="150" width="150">
+                            </a>
+                        </div>
+                        <div class="col-xs-6" style="text-align: center">
+                            <a href="javascript:void(0)" onclick="submit(1);">
+                                <img class="img-rounded" src="resource/img/ball.jpg" height="150" width="150">
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-6" style="text-align: center">
+                            <a href="javascript:void(0)" onclick="submit(2);">
+                                <img class="img-rounded" src="resource/img/dog.jpg" height="150" width="150">
+                            </a>
+                        </div>
+                        <div class="col-xs-6" style="text-align: center">
+                            <a href="javascript:void(0)" onclick="submit(3);">
+                                <img class="img-rounded" src="resource/img/ball.jpg" height="150" width="150">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mastfoot">
+                <div style="text-align: center;padding-bottom: 5px;">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<child hidden>123</child>
+<question hidden>456</question>
+<correct hidden>0</correct>
+<word0 hidden>dog</word0>
+<word1 hidden>ball</word1>
+<word2 hidden>door</word2>
+<word3 hidden>dark</word3>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="vendor/iCheck/icheck.min.js"></script>
+<script>
+    var word = new Array(4);
+    var child_id, ques_id, correct;
+
+    $(document).ready(function () {
+        child_id = $('child').html();
+        ques_id = $('question').html();
+        correct = $('correct').html();
+
+        word[0] = $('word0').html();
+        word[1] = $('word1').html();
+        word[2] = $('word2').html();
+        word[3] = $('word3').html();
+
+        //console.log('correct:' + correct);
+
+        var audio = document.getElementById('music_src');
+        audio.setAttribute('src', 'resource/voice/' + word[correct] + '.mp3');
+        audio.addEventListener("loadeddata",
+            function () {
+                $('#music_label').attr('class', 'glyphicon glyphicon-play');
+                $('#music_label').html('');
+            }, false);
+
+    });
+
+    $('#play_music').click(function () {
+        var audio = document.getElementById('music_src');
+        audio.play();
+    });
+
+    submit = function(sel) {
+        var json_data = {
+            'childID': child_id,
+            'questionID': ques_id,
+            'answer': word[sel]
+        };
+        $.post('/wordtest', json_data);
+    }
+</script>
+</body>
+</html>
