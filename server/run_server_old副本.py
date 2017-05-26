@@ -42,7 +42,8 @@ def showIndex():
 
     print 'ip: ', request.access_route
 
-    return render_template('index.html')
+    return jsonify(childID=1, questionID=1, wordList=['a','b'], isLastQuestion=0)
+
 
 
 @app.route('/begin', methods=['GET', 'POST'])
@@ -65,11 +66,8 @@ def begin():
         session.commit()
         print "create a new child, id = ", newchild.id
         question = session.query(Question).filter_by(id=1).one()
-        #wordList = [question.correct, question.wrong1, question.wrong2, question.wrong3]
-        return render_template('selection.html', childID=newchild.id, questionID=1, correct=question.correct,
-            word1=question.correct, word2=question.wrong1, word3=question.wrong2, word4=question.wrong3,
-            isLastQuestion=0)
-
+        wordList = [question.correct, question.wrong1, question.wrong2, question.wrong3]
+        return jsonify(childID=newchild.id, questionID=1, wordList=wordList, isLastQuestion=0)
 
 def updateWordTestResult(childID, questionID, answer):
     print childID, questionID, answer
@@ -108,15 +106,11 @@ def wordTest():
 
         questionID = questionID+1
         question = session.query(Question).filter_by(id=questionID).one()
-        #wordList = [question.correct, question.wrong1, question.wrong2, question.wrong3]
+        wordList = [question.correct, question.wrong1, question.wrong2, question.wrong3]
         if num_ans == 2:
-            return render_template('selection.html', childID=childID, questionID=questionID, correct=question.correct,
-            word1=question.correct, word2=question.wrong1, word3=question.wrong2, word4=question.wrong3,
-            isLastQuestion=1)
+            return jsonify(childID=childID, questionID=questionID, wordList=wordList, isLastQuestion=1)
         else:
-            return render_template('selection.html', childID=childID, questionID=questionID,  correct=question.correct,
-            word1=question.correct, word2=question.wrong1, word3=question.wrong2, word4=question.wrong3,
-            isLastQuestion=0)
+            return jsonify(childID=childID, questionID=questionID, wordList=wordList, isLastQuestion=0)
 
 @app.route('/wordtestresult', methods=['GET', 'POST'])
 def wordTestResult():
@@ -130,7 +124,7 @@ def wordTestResult():
         if 3 != updateWordTestResult(childID, questionID, answer):
             print "wrong num of questions!"
 
-        return render_template('wordTestResult.html')
+        return jsonify(ageTest=666)
 
 
 
