@@ -6,9 +6,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, Question, Child
+from db_setup import Base, Question, Child
 
-engine = create_engine('sqlite:///languageData.db')
+engine = create_engine('sqlite:///language_data.db')
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()

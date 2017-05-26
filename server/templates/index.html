@@ -1,67 +1,74 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<title>测测您小孩的英语水平相当于多大的美国小孩</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
+    <title>少儿英语水平基准测试</title>
 
+    <!-- Bootstrap core CSS -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/index.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body bgcolor=#ffffff>
-<h1>测测您小孩的英语水平相当于多大的美国小孩</h1>
-<h3>说明： 请您和您的孩子共同完成，一会屏幕上将显示4张图片，电脑会读出一个英文单词，请您的孩子指出哪个图最符合这个单词的意思，然后由您选择这个单词后，点下一题。[在此处补充说明]</h3>
 
-<form action="{{ url_for('wordTest')}}" method = 'post'>
+<body>
 
-为了测试的准确性，请您填写您孩子的几个基本信息，我们会选择更合理的题目。
+<div class="site-wrapper">
 
-<P>1. 您孩子的性别：<BR>
-<input type="radio" name="sex" value="m">男<BR>
-<input type="radio" name="sex" value="f">女<BR>
-</p>
-<BR>
+    <div class="site-wrapper-inner">
 
-<P>2. 您孩子的年龄:<BR>
-<select name="age">
-<option value="1">1岁及以下</option>
-<option value="1.5">1岁半</option>
-<option value="2">2岁</option>
-<option value="2.5">2岁半</option>
-<option value="3">3岁</option>
-<option value="3.5">3岁半</option>
-<option value="4">4岁</option>
-<option value="4.5">4岁半</option>
-<option value="5">5岁</option>
-<option value="5.5">5岁半</option>
-<option value="6">6岁</option>
-<option value="6.5">6岁半及以上</option>
-</select>
+        <div class="cover-container">
 
-</p>
-<BR>
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">TEST</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">联系我们</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
-<P>3. 您的孩子曾在哪几种情景下接触过英语:<BR>
-<input type="checkbox" name="edu1" placeholder="edu1">课外英语辅导班<BR>
-<input type="checkbox" name="edu2" placeholder="edu2">幼儿园英语课<BR>
-<input type="checkbox" name="edu3" placeholder="edu3">使用英语的其他课外课程或活动<BR>
-<input type="checkbox" name="edu4" placeholder="edu4">海外生活经历（连续三个月以上）<BR>
-<input type="checkbox" name="edu5" placeholder="edu5">海外短期出游<BR>
-<input type="checkbox" name="edu6" placeholder="edu6">与父母或家人的日常交流<BR>
-<input type="checkbox" name="edu7" placeholder="edu7">英语媒体（书籍、音乐、电影等）<BR>
-<BR>
-</p>
-<BR>
+            <div class="inner cover">
+                <h1 class="cover-heading">儿童语言水平基准测试</h1>
+                <br>
+                <p class="lead">填写此测试，对您的孩子进行语言水平评估。</p>
+                <br>
+                <p class="lead">
+                    <a href="/info" class="btn btn-lg btn-default">开始测试</a>
+                </p>
+            </div>
 
-<input type="reset" value="重置">
-<br>
+            <div class="mastfoot">
+                <div class="inner">
+                    <p style="text-align: center;">Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
 
-<br>
-<input type="submit" value="开始测试">
-</form>
+        </div>
 
+    </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
 </body>
-
 </html>
-
-
-
-
-
-

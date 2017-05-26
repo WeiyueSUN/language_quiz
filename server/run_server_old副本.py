@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Question, Child
+from db_setup import Base, Question, Child
 from flask import send_file
 import time
 
 
 app = Flask(__name__, static_folder='/vagrant/project/1')
-engine = create_engine('sqlite:///languageData.db')
+engine = create_engine('sqlite:///language_data.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
