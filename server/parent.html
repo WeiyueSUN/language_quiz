@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>初步信息确认</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="static/vendor/iCheck/skins/flat/red.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/info.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">TEST</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">联系我们</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover" style="padding-top: 50px;">
+                <h3 align="center">以下X道题请家长填写，大约花费X分钟。</h3>
+                <br>
+                <form class="form-horizontal" id="information" method="post" action="/begin">
+                    <div class="form-group" style="padding: 50px;">
+                        <h3><em>关于幼儿园英语课</em></h3>
+                        <br>
+                        <div style="padding-left: 30px;">
+                            <h4>迄今为止孩子参加幼儿园英语课的时长？</h4>
+                            <select id="kg_eng_age" name="kg_eng_age" class="selectpicker" data-width="fit"
+                                    style="width: auto">
+                                <option value="0">没有参加过</option>
+                                <option value="0.5">0.5</option>
+                                <option value="1">1</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3">3</option>
+                                <option value="3.5">3.5</option>
+                                <option value="4">4</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5">5</option>
+                                <option value="5.5">5.5</option>
+                                <option value="6">6</option>
+                            </select>
+                            <label> 年 </label>
+                            <div class="kg_hide">
+                                <h4>每周参加幼儿园英语课的时间是？</h4>
+                                <select id="kg_eng_time" name="kg_eng_time" class="selectpicker" data-width="fit"
+                                        style="width: auto">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="more">大于7</option>
+                                </select>
+                                <label> 小时 </label>
+                                <h4>幼儿园英语课使用英文的比例是？</h4>
+                                <select id="kg_eng_fre" name="kg_eng_fre" class="selectpicker" data-width="fit"
+                                        style="width: auto;">
+                                    <option value="1">小于30%</option>
+                                    <option value="2">30%-80%</option>
+                                    <option value="3">80%以上</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br><br>
+
+                        <h3><em>关于课外英语辅导班</em></h3>
+                        <br>
+                        <div style="padding-left: 30px;">
+                            <h4>迄今为止孩子参加英语辅导班的时长？</h4>
+                            <select id="out_eng_age" name="out_end_age" class="selectpicker" data-width="fit"
+                                    style="width: auto;">
+                                <option value="0">没有参加过</option>
+                                <option value="0.5">0.5</option>
+                                <option value="1">1</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3">3</option>
+                                <option value="3.5">3.5</option>
+                                <option value="4">4</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5">5</option>
+                                <option value="5.5">5.5</option>
+                                <option value="6">6</option>
+                            </select>
+                            <label> 年 </label>
+                            <div class="out_hide">
+                                <h4>孩子每周参加英语辅导班的时间是？</h4>
+                                <select id="out_eng_time" name="out_eng_time" class="selectpicker" data-width="fit"
+                                        style="width: auto;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="more">大于7</option>
+                                </select>
+                                <label> 小时 </label>
+                                <h4>英语辅导班使用英文的比例是？</h4>
+                                <select id="out_eng_fre" name="out_eng_fre" class="selectpicker" data-width="fit"
+                                        style="width: auto;">
+                                    <option value="1">小于30%</option>
+                                    <option value="2">30%-80%</option>
+                                    <option value="3">80%以上</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br><br>
+
+                        <h3><em>关于其他英语课程或活动</em></h3>
+                        <br>
+                        <div style="padding-left: 30px;">
+                            <h4>迄今为止孩子参加这类活动的时长？</h4>
+                            <select id="act_eng_age" name="act_end_age" class="selectpicker" data-width="fit"
+                                    style="width: auto;">
+                                <option value="0">没有参加过</option>
+                                <option value="0.5">0.5</option>
+                                <option value="1">1</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3">3</option>
+                                <option value="3.5">3.5</option>
+                                <option value="4">4</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5">5</option>
+                                <option value="5.5">5.5</option>
+                                <option value="6">6</option>
+                            </select>
+                            <label> 年 </label>
+                            <div class="act_hide">
+                                <h4>孩子每周参加这类活动的时间是？</h4>
+                                <select id="act_eng_time" name="act_eng_time" class="selectpicker" data-width="fit"
+                                        style="width: auto;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="more">大于7</option>
+                                </select>
+                                <label> 小时 </label>
+                                <h4>活动或课程中使用英文的比例是？</h4>
+                                <select id="act_eng_fre" name="act_eng_fre" class="selectpicker" data-width="fit"
+                                        style="width: auto;">
+                                    <option value="1">小于30%</option>
+                                    <option value="2">30%-80%</option>
+                                    <option value="3">80%以上</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br><br>
+
+                        <h3><em>关于海外生活经历</em></h3>
+                        <br>
+                        <div style="padding-left: 30px;">
+                            <h4>孩子在海外英语国家的生活经历（长期生活）时长？</h4>
+                            <select id="foreign_live_time" name="foreign_live_time" class="selectpicker"
+                                    data-width="fit"
+                                    style="width: auto;">
+                                <option value="0">无</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                            <label> 月 </label>
+                            <h4>孩子在海外英语国家短期出游（短期旅行）时长？</h4>
+                            <select id="foreign_tour_time" name="foreign_tour_time" class="selectpicker"
+                                    data-width="fit"
+                                    style="width: auto">
+                                <option value="0">无</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                            <label> 周 </label>
+                        </div>
+                        <br><br>
+
+                        <h3><em>关于日常生活英语使用</em></h3>
+                        <br>
+                        <div style="padding-left: 30px;">
+                            <h4>家人和孩子用英语沟通的频率如何？</h4>
+                            <select id="family_fre" name="family_fre" class="selectpicker" data-width="fit"
+                                    style="width: auto;">
+                                <option value="1">从不</option>
+                                <option value="2">偶尔每天几分钟</option>
+                                <option value="3">每天半小时</option>
+                                <option value="4">每天半小时到一小时</option>
+                                <option value="5">每天一小时以上</option>
+                                】
+                                <option value="6">每天两小时以上</option>
+                                <option value="7">每天超过一半的时间在用英语沟通</option>
+                            </select>
+                            <h4>孩子接触英文媒体的频率如何？</h4>
+                            <select id="kid_fre" name="kid_fre" class="selectpicker" data-width="fit"
+                                    style="width: auto">
+                                <option value="1">从不</option>
+                                <option value="2">偶尔每周几分钟</option>
+                                <option value="3">每周半小时</option>
+                                <option value="4">每周半小时到一小时</option>
+                                <option value="5">每周三小时以上</option>
+                                <option value="6">每周五小时以上</option>
+                                <option value="7">每周七小时以上</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div align="center">
+                        <button type="button" onclick="begin();" class="btn btn-default btn-lg">继续</button>
+                    </div>
+                    <br>
+                </form>
+            </div>
+            <br>
+
+            <div style="color: rgba(255, 255, 255, .5);">
+                <div style="text-align: center;padding-bottom: 5px;">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="static/vendor/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-red',
+            radioClass: 'iradio_flat-red',
+            increaseArea: '20%' // optional
+        });
+
+        $('.kg_hide').attr('hidden', true);
+        $('.act_hide').attr('hidden', true);
+        $('.out_hide').attr('hidden', true);
+
+
+        $('#kg_eng_age').on('changed.bs.select', function () {
+            if($('#kg_eng_age').val() == '0') {
+                $('.kg_hide').attr('hidden', true);
+            } else {
+                $('.kg_hide').attr('hidden', false);
+            }
+        });
+
+        $('#act_eng_age').on('changed.bs.select', function () {
+            if($('#act_eng_age').val() == '0') {
+                $('.act_hide').attr('hidden', true);
+            } else {
+                $('.act_hide').attr('hidden', false);
+            }
+        });
+
+        $('#out_eng_age').on('changed.bs.select', function () {
+            if($('#out_eng_age').val() == '0') {
+                $('.out_hide').attr('hidden', true);
+            } else {
+                $('.out_hide').attr('hidden', false);
+            }
+        });
+
+    });
+
+    begin = function () {
+
+        var form = document.createElement('form');
+        form.action = '';
+        form.target = '_self';
+        form.method = 'post';
+
+        var opt = document.createElement('input');
+        opt.name = '???';
+        opt.value = '???';
+        form.appendChild(opt);
+
+
+        // do something...
+
+        document.body.appendChild(form);
+        form.submit();
+
+    }
+</script>
+</body>
+</html>

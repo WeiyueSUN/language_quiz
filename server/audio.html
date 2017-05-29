@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>初步信息确认</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="static/vendor/iCheck/skins/flat/red.css" rel="stylesheet">
+    <link href="static/vendor/buttons/buttons.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/info.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">TEST</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#">联系我们</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover" style="padding-top: 50px;">
+                <h3 align="center">点击喇叭，<br>播放一串随机数字序列，<br>请您的孩子认真记忆此序列。</h3>
+                <br>
+                <div align="center">
+                    <h3 id="correct_word"></h3>
+                </div>
+                <br>
+                <div align="center">
+                    <button type="button" class="button button-3d button-pill button-large" id="play_music">
+                        <span id="music_label">音频加载中...</span>
+                    </button>
+                </div>
+                <br>
+                <audio id="music_src" hidden>您的设备不支持audio标签播放。</audio>
+                <br>
+                <div>
+                    <div style="width: 100%;">
+                        <div align="center">
+                            <h4>请将结果填入下面的文本框中。</h4>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="recite" id="recite"
+                                   style="text-align: center;">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div align="center">
+                    <button type="button" onclick="begin();" class="btn btn-default btn-lg">继续</button>
+                </div>
+                <br>
+            </div>
+            <br>
+            <br>
+            <div style="color: rgba(255, 255, 255, .5);">
+                <div style="text-align: center;padding-bottom: 5px;">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="static/vendor/iCheck/icheck.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+
+        var audio = document.getElementById('music_src');
+        audio.setAttribute('src', 'static/resource/num_seq/' + +'.mp3');
+        audio.addEventListener("loadeddata",
+            function () {
+                $('#music_label').attr('class', 'glyphicon glyphicon-play');
+                $('#music_label').html('');
+            }, false);
+
+    });
+
+    $('#play_music').click(function () {
+        var audio = document.getElementById('music_src');
+        audio.play();
+    });
+
+    submit = function (sel) {
+
+        var form = document.createElement('form');
+        form.action = '???';
+        form.target = '_self';
+        form.method = 'post';
+
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</body>
+</html>
