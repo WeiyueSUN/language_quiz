@@ -90,6 +90,11 @@ def wordTest():
                            isLastQuestion=1 if num_ans == 10 else 0)
 
 
+# 信息页
+@app.route('/parent', methods=['GET'])
+def parent():
+    return render_template('parent.html')
+
 @app.route('/child/JSON')
 def childJSON():
     children = session.query(Child).all()

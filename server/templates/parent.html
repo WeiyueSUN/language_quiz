@@ -316,15 +316,74 @@
     begin = function () {
 
         var form = document.createElement('form');
-        form.action = '';
+        form.action = '/survey';
         form.target = '_self';
         form.method = 'post';
 
         var opt = document.createElement('input');
-        opt.name = '???';
-        opt.value = '???';
+        opt.name = 'Q11';
+        opt.value = $('#kg_eng_age').val();
         form.appendChild(opt);
 
+        opt = document.createElement('input');
+        opt.name = 'Q12';
+        opt.value = $('#kg_eng_time').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q13';
+        opt.value = $('#kg_eng_fre').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q21';
+        opt.value = $('#out_eng_age').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q22';
+        opt.value = $('#out_eng_time').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q23';
+        opt.value = $('#out_eng_fre').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q31';
+        opt.value = $('#act_eng_age').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q32';
+        opt.value = $('#act_eng_time').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q33';
+        opt.value = $('#act_eng_fre').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q4';
+        opt.value = $('#foreign_live_time').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q5';
+        opt.value = $('#foreign_tour_time').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q6';
+        opt.value = $('#family_fre').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'Q7';
+        opt.value = $('#kid_fre').val();
+        form.appendChild(opt);
 
         // do something...
 
