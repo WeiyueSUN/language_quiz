@@ -166,6 +166,9 @@
 
         var form = document.createElement('form');
         form.action = '/wordtest';
+        if(is_last == '1') {
+            form.action = '/wordtestresult';
+        }
         form.target = '_self';
         form.method = 'post';
 
