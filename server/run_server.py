@@ -161,6 +161,7 @@ def wordTestResult():
 
 @app.route('/survey', methods=['GET', 'POST'])
     if request.method == 'POST':
+        childID = request.form.get('childID')
         Q11 = request.form.get('Q11')
         Q12 = request.form.get('Q12')
         Q13 = request.form.get('Q13')
