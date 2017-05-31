@@ -148,15 +148,33 @@ def wordTestResult():
         print "word test over"
         testResult = request.get_json()
 
-        childID = int(testResult['childID'])
-        questionID = int(testResult['questionID'])
-        answer = testResult['answer']
-        if 5 != updateWordTestResult(childID, questionID, answer):
+        childID = int(request.form.get('childID'))
+        questionID = int(request.form.get('questionID'))
+        answer = int(request.form.get('answer'))
+        if 3 != updateWordTestResult(childID, questionID, answer):
             print "wrong num of questions!"
 
         pred_age = 666
-        return render_template('wordTestResult.html', pred_age = pred_age)
+        return render_template('wordTestResult.html', pred_age = pred_age, childID=childID)
 
+@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/survey', methods=['GET', 'POST'])
+    if request.method == 'POST':
+        Q11 = request.form.get('Q11')
+        Q12 = request.form.get('Q12')
+        Q13 = request.form.get('Q13')
+        Q21 = request.form.get('Q21')
+        Q22 = request.form.get('Q22')
+        Q23 = request.form.get('Q23')
+        Q31 = request.form.get('Q31')
+        Q32 = request.form.get('Q32')
+        Q33 = request.form.get('Q33')
+        Q4 = request.form.get('Q4')
+        Q5 = request.form.get('Q5')
+        Q6 = request.form.get('Q6')
+        Q7 = request.form.get('Q7')
+        return render_template('cogizition.html', childID=childID)
 
 
 if __name__ == '__main__':
