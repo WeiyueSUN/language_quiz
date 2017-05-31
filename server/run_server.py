@@ -154,12 +154,32 @@ def wordTestResult():
 
         childID = int(request.form.get('childID'))
         questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        if 5 != updateWordTestResult(childID, questionID, answer):
+        answer = int(request.form.get('answer'))
+        if 10 != updateWordTestResult(childID, questionID, answer):
             print "wrong num of questions!"
 
         pred_age = 15
-        return render_template('selection_result.html', pred_age=pred_age)
+        return render_template('selection_result.html', pred_age = pred_age, childID=childID)
+
+
+@app.route('/survey', methods=['GET', 'POST'])
+def surveySubmit():
+    if request.method == 'POST':
+        childID = request.form.get('childID')
+        Q11 = request.form.get('Q11')
+        Q12 = request.form.get('Q12')
+        Q13 = request.form.get('Q13')
+        Q21 = request.form.get('Q21')
+        Q22 = request.form.get('Q22')
+        Q23 = request.form.get('Q23')
+        Q31 = request.form.get('Q31')
+        Q32 = request.form.get('Q32')
+        Q33 = request.form.get('Q33')
+        Q4 = request.form.get('Q4')
+        Q5 = request.form.get('Q5')
+        Q6 = request.form.get('Q6')
+        Q7 = request.form.get('Q7')
+        return render_template('raven.html', childID=childID)
 
 
 if __name__ == '__main__':
