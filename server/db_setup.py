@@ -16,15 +16,18 @@ class Question(Base):
     wrong1 = Column(String(15), nullable=False)
     wrong2 = Column(String(15), nullable=False)
     wrong3 = Column(String(15), nullable=False)
+    level = Column(Integer, nullable=False)
 
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
+            'id': self.id,
             'correct': self.correct,
             'wrong1': self.wrong1,
             'wrong2': self.wrong2,
-            'wrong3': self.wrong3
+            'wrong3': self.wrong3,
+            'level': self.level
         }
 
 
@@ -81,3 +84,5 @@ class Child(Base):
 engine = create_engine('sqlite:///language_data.db')
 
 Base.metadata.create_all(engine)
+
+

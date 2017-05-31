@@ -87,7 +87,7 @@ def wordTest():
                            word1=question.wrong1,
                            word2=question.wrong2,
                            word3=question.wrong3,
-                           isLastQuestion=1 if num_ans == 2 else 0)
+                           isLastQuestion=1 if num_ans == 193 else 0)
 
 
 @app.route('/child/JSON')
@@ -114,9 +114,13 @@ def showChild():
 
 
 def updateWordTestResult(childID, questionID, answer):
-    print childID, questionID, answer
     question = session.query(Question).filter_by(id=questionID).one()
     updateChild = session.query(Child).filter_by(id=childID).one()
+
+    print childID, questionID, answer, question.correct
+    if answer != question.correct:
+        print WWWWWWWWWWWWWWWWWWW
+
     num_ans = updateChild.num_ans + 1
     if num_ans == 1:
         updateChild.ans1 = answer
@@ -147,10 +151,12 @@ def wordTestResult():
         childID = int(testResult['childID'])
         questionID = int(testResult['questionID'])
         answer = testResult['answer']
-        if 3 != updateWordTestResult(childID, questionID, answer):
+        if 5 != updateWordTestResult(childID, questionID, answer):
             print "wrong num of questions!"
 
-        return render_template('wordTestResult.html')
+        pred_age = 666
+        return render_template('wordTestResult.html', pred_age = pred_age)
+
 
 
 if __name__ == '__main__':
