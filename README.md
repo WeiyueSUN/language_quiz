@@ -40,16 +40,17 @@ This is a SRT project in Tsinghua University, supervised by Prof. M. Zhang
   - questionID：题号 整数
   - answer：选择的单词（英文字母形式）
  - 返回：单词测试页面，参数childID，questionID，correct，word0~word3, isLastQuestion=0/1
-
+ 
+# 当上个url返回的isLastQuestion==1时，接下来请求这个url
 ### /wordtestresult
 
 - 方法：post
 - 格式：form
-- 参数：
-  - childID：整数
-  - questionID：题号 整数
-  - answer：选择的单词（英文字母形式）
- - 返回：单词测试结果页面，参数childID，pred_age，correct
+- 参数：同上
+  - childID：
+  - questionID：
+  - answer：
+ - 返回：单词测试结果页面，参数childID，pred_age
 
 ### /survey
 
@@ -75,6 +76,17 @@ This is a SRT project in Tsinghua University, supervised by Prof. M. Zhang
 - 方法：get
 - 返回：瑞文测试页面，参数childID，questionID，isLastQuestion=0/1
 
+# 当上个url返回的isLastQuestion==1时，接下来请求这个url
+### /raventestresult
+
+- 方法：post
+- 格式：form
+- 参数：同上
+  - childID：
+  - questionID：
+  - answer：
+ - 返回：瑞文测试之后的页面，参数childID
+
 
 ### /memory
 
@@ -82,9 +94,20 @@ This is a SRT project in Tsinghua University, supervised by Prof. M. Zhang
 - 格式：form
 - 参数：
   - childID：整数
-  - lenth：题号 整数
+  - lenth：题号 整数，为数字串长度
   - answer：输入的数字串，限制不超过15
-- 返回：工作记忆测试页面, 参数childID，lenth(注：这里事先约定好音频命名规则，如5.MP3表示5个数字音频，则lenth=5)
+- 返回：工作记忆测试页面, 参数childID，lenth(注：这里事先约定好音频命名规则，如5.MP3表示5个数字音频，则lenth=5)，isLastQuestion=0/1
   或者返回：结束页面
 - 方法：get
-- 返回：工作记忆测试页面, 参数childID，lenth
+- 返回：工作记忆测试页面, 参数childID，lenth, isLastQuestion=0/1
+
+# 当上个url返回的isLastQuestion==1时，接下来请求这个url
+### /memorytestresult
+- 方法：post
+- 格式：form
+- 参数：同上
+  - childID：
+  - lenth：
+  - answer：
+ - 返回：记忆测试之后的页面，参数childID
+
