@@ -15,12 +15,19 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 NUMWORDTEST = 20
-NUMRAVENTEST = 6
+NUMRAVENTEST = 8
 NUMMEMORYTEST = 5
+
+'''
+以下为自定义路由
+'''
+
+
 # 查看ip
 @app.route("/ip", methods=["GET"])
 def get_my_ip():
     return jsonify(origin=request.headers.get('X-Forwarded-For', request.remote_addr)), 200
+
 
 # 查看数据库题库
 @app.route("/q", methods=["GET"])
@@ -28,24 +35,32 @@ def showQ():
     questions = session.query(Question).all()
     return jsonify(questions=[q.serialize for q in questions])
 
+
 # 查看数据库小孩答题记录
 @app.route("/child", methods=["GET"])
 def showChild():
     children = session.query(Child).all()
     return jsonify(children=[child.serialize for child in children])
 
-# 返回首页
+
+'''
+以下为实际用到的路由
+'''
+
+
+# ①首页
 @app.route('/', methods=['GET'])
 def showIndex():
     return render_template('index.html')
 
-# 返回填写信息页
+
+# ②填写信息页
 @app.route('/info', methods=['GET'])
 def showInfo():
     return render_template('info.html')
 
 
-# 提交信息，返回单词测试页
+# ③提交信息，返回单词测试页，为远端分配childID
 @app.route('/begin', methods=['POST'])
 def begin():
     newchild = Child()
@@ -80,7 +95,8 @@ def begin():
                            word3=question.wrong3,
                            isLastQuestion=0)
 
-# 提交单测测试的一个题目，返回
+
+# ④提交单词测试的一个题目
 @app.route('/wordtest', methods=['POST'])
 def wordTest():
     childID = int(request.form.get('childID'))
@@ -90,7 +106,6 @@ def wordTest():
 
     num_ans = updateWordTestResult(childID, questionID, answer)
     # 更新答题信息
-
 
     questionID = questionID + 1
     question = session.query(Question).filter_by(id=questionID).one()
@@ -106,6 +121,8 @@ def wordTest():
                            word3=question.wrong3,
                            isLastQuestion=1 if num_ans == NUMWORDTEST - 1 else 0)
 
+
+# 数据更新
 def updateWordTestResult(childID, questionID, answer):
     question = session.query(Question).filter_by(id=questionID).one()
     updateChild = session.query(Child).filter_by(id=childID).one()
@@ -129,93 +146,129 @@ def updateWordTestResult(childID, questionID, answer):
     session.add(updateChild)
     session.commit()
 
-    print 'word test: childID:{}, questionID:{}, answer:{}, correct:{}, num_ans:{}'.format(childID, questionID, answer, question.correct, num_ans)
+    print 'word test: childID:{}, questionID:{}, answer:{}, correct:{}, num_ans:{}'.format(childID, questionID, answer,
+                                                                                           question.correct, num_ans)
 
     return num_ans
 
 
-@app.route('/wordtestresult', methods=['GET', 'POST'])
+# ⑤返回单词测试结果
+@app.route('/wordtestresult', methods=['POST'])
 def wordTestResult():
-    if request.method == 'POST':
-        print "word test over"
+    print "word test over"
 
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
+    childID = int(request.form.get('childID'))
+    questionID = int(request.form.get('questionID'))
+    answer = request.form.get('answer')
 
-        if NUMWORDTEST != updateWordTestResult(childID, questionID, answer):
-            print "wrong num of questions!"
+    if NUMWORDTEST != updateWordTestResult(childID, questionID, answer):
+        print "wrong num of questions!"
 
-        pred_age = 15
-        return render_template('selection_result.html', pred_age = pred_age, childID=childID)
+    # 在这里加入计算分数的代码，并将其写入变量pred_age
 
-@app.route('/survey', methods=['GET', 'POST'])
+    pred_age = 15
+    return render_template('selection_result.html', pred_age=pred_age, childID=childID)
+
+
+# ⑥返回家长填写信息页
+@app.route('/parent', methods=['GET'])
+def parent():
+    return render_template('parent.html')
+
+
+# ⑦处理家长填写信息，并返回瑞文推理引导语页
+@app.route('/survey', methods=['POST'])
 def surveySumbit():
-    if request.method == 'POST':
-        childID = request.form.get('childID')
-        A11 = request.form.get('A11')
-        A12 = request.form.get('A12')
-        A13 = request.form.get('A13')
-        A21 = request.form.get('A21')
-        A22 = request.form.get('A22')
-        A23 = request.form.get('A23')
-        A31 = request.form.get('A31')
-        A32 = request.form.get('A32')
-        A33 = request.form.get('A33')
-        A4 = request.form.get('A4')
-        A5 = request.form.get('A5')
-        A6 = request.form.get('A6')
-        A7 = request.form.get('A7')
-        return render_template('connection_page.html', childID=childID)
+    childID = request.form.get('childID')
+    Q11 = request.form.get('Q11')
+    Q12 = request.form.get('Q12')
+    Q13 = request.form.get('Q13')
+    Q21 = request.form.get('Q21')
+    Q22 = request.form.get('Q22')
+    Q23 = request.form.get('Q23')
+    Q31 = request.form.get('Q31')
+    Q32 = request.form.get('Q32')
+    Q33 = request.form.get('Q33')
+    Q4 = request.form.get('Q4')
+    Q5 = request.form.get('Q5')
+    Q6 = request.form.get('Q6')
+    Q7 = request.form.get('Q7')
 
-@app.route('/raventest', methods=['GET', 'POST'])
+    # 在这里执行数据入库操作...
+
+    return render_template('raven_before.html', childID=childID)
+
+
+# ⑧开始执行瑞文测试
+@app.route('/ravenbegin', methods=['POST'])
+def ravenBegin():
+    childID = int(request.form.get('childID'))
+    return render_template('raven_test.html', childID=childID, questionID=1,
+                           isLastQuestion=0)
+
+
+# ⑨瑞文测试
+@app.route('/raventest', methods=['POST'])
 def ravenTest():
-    if request.method == 'POST':
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        return render_template('raven_test.html', childID=childID, questionID=questionID+1, isLastQuestion=1 if questionID == NUMRAVENTEST - 1 else 0)
+    childID = int(request.form.get('childID'))
+    questionID = int(request.form.get('questionID'))
+    answer = request.form.get('answer')
 
-    else:
-        return render_template('raven_test.html', childID=childID, questionID=1, isLastQuestion=1)
+    # 在这里执行数据入库操作...
 
-@app.route('/raventestresult', methods=['GET', 'POST'])
+    return render_template('raven_test.html', childID=childID, questionID=questionID + 1,
+                           isLastQuestion=1 if questionID == NUMRAVENTEST - 1 else 0)
+
+
+# ⑩瑞文测试结果
+@app.route('/raventestresult', methods=['POST'])
 def ravenTestResult():
-    if request.method == 'POST':
-        print "raven test over"
+    print "raven test over"
 
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        if NUMRAVENTEST != questionID:
-            print "wrong num of raven questions!"
+    childID = int(request.form.get('childID'))
+    questionID = int(request.form.get('questionID'))
+    answer = request.form.get('answer')
+
+    # 在这里执行数据入库操作...
+
+    if NUMRAVENTEST != questionID:
+        print "wrong num of raven questions!"
+
+    # 在这里计算瑞文推理测试结果...
+
+    return render_template('raven_result.html', childID=childID)
 
 
-        return render_template('connection_page2.html', childID=childID)
+# ⑪开始进行记忆测试
+@app.route('/memorybegin', methods=['GET'])
+def memoryBegin():
+    return render_template('audio.html', length=1,
+                           isLastQuestion=0)
 
-@app.route('/memorytest', methods=['GET', 'POST'])
+# 开始处理记忆测试
+@app.route('/memorytest', methods=['POST'])
 def memoryTest():
-    if request.method == 'POST':
-        childID = int(request.form.get('childID'))
-        lenth = int(request.form.get('lenth'))
-        answer = request.form.get('answer')
-        return render_template('memory_test.html', childID=childID, lenth=lenth+1, isLastQuestion=1 if lenth == NUMMEMORYTEST - 1 else 0)
+    childID = int(request.form.get('childID'))
+    length = int(request.form.get('length'))
+    answer = request.form.get('answer')
+    return render_template('audio.html', childID=childID, length=length + 1,
+                           isLastQuestion=1 if length == NUMMEMORYTEST - 1 else 0)
 
-    else:
-        return render_template('memory_test.html', childID=childID, lenth=1, isLastQuestion=1)
 
+# ⑫给出记忆测试结果
 @app.route('/memorytestresult', methods=['GET', 'POST'])
 def memoryTestResult():
     if request.method == 'POST':
         print "memory test over"
 
         childID = int(request.form.get('childID'))
-        lenth = int(request.form.get('lenth'))
+        length = int(request.form.get('length'))
         answer = int(request.form.get('answer'))
-        if NUMMEMORYTEST != lenth:
+        if NUMMEMORYTEST != length:
             print "wrong num of memory questions!"
 
         return render_template('connection_page3.html', childID=childID)
+
 
 if __name__ == '__main__':
     app.debug = True

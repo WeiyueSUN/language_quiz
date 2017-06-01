@@ -44,11 +44,11 @@
                 </div>
             </div>
 
-            <div class="inner cover" style="padding-top: 20px;">
-                <h3 align="center">请选择你认为正确的图片填充在下面的空缺处。</h3>
-                <br>
+            <div class="inner cover" style="padding-top: 0px;">
+                <h4 align="center">请选择你认为正确的图片填在空缺处。</h4>
+
                 <div align="center">
-                    <img src="static/resource/raven_img/A1.jpg" height="400">
+                    <img src="" height="300">
                 </div>
                 <br>
 
@@ -101,6 +101,9 @@
 
     </div>
 </div>
+<child_id hidden>{{childID}}</child_id>
+<ques hidden>{{questionID}}</ques>
+<is_last hidden>{{isLastQuestion}}</is_last>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -117,31 +120,64 @@
             increaseArea: '20%' // optional
         });
 
+        var ques_id = $('ques').html();
+        var img = $('img');
+        switch (ques_id) {
+            case '1':
+                $(img).attr('src', 'static/resource/raven_img/A1.jpg');
+                break;
+            case '2':
+                $(img).attr('src', 'static/resource/raven_img/A5.jpg');
+                break;
+            case '3':
+                $(img).attr('src', 'static/resource/raven_img/A6.jpg');
+                break;
+            case '4':
+                $(img).attr('src', 'static/resource/raven_img/A7.jpg');
+                break;
+            case '5':
+                $(img).attr('src', 'static/resource/raven_img/A11.jpg');
+                break;
+            case '6':
+                $(img).attr('src', 'static/resource/raven_img/A12.jpg');
+                break;
+            case '7':
+                $(img).attr('src', 'static/resource/raven_img/B5.jpg');
+                break;
+            case '8':
+                $(img).attr('src', 'static/resource/raven_img/B12.jpg');
+                break;
+            default:
+                break;
+        }
     });
 
     begin = function () {
+        var is_last = $('is_last').html();
 
         var form = document.createElement('form');
-        form.action = '/begin';
+        form.action = '/raventest';
+        if(is_last == '1') {
+            form.action = '/raventestresult'
+        }
         form.target = '_self';
         form.method = 'post';
 
         var opt = document.createElement('input');
-        opt.name = 'sex';
-        opt.value = $('#sex').is(':checked') ? 'm' : 'f';
+        opt.name = 'childID';
+        opt.value = $('child_id').html();
         form.appendChild(opt);
 
         opt = document.createElement('input');
-        opt.name = 'year';
-        opt.value = $('#age').val();
+        opt.name = 'questionID';
+        opt.value = $('ques').html();
         form.appendChild(opt);
 
-        for (var i = 1; i < 8; ++i) {
-            opt = document.createElement('input');
-            opt.name = 'edu' + i;
-            opt.value = $('#edu' + i).is(':checked') ? 1 : 0;
-            form.appendChild(opt);
-        }
+        opt = document.createElement('input');
+        opt.name = 'answer';
+        opt.value = $('input[name="sel"]:checked').val();
+        form.appendChild(opt);
+
         document.body.appendChild(form);
         form.submit();
 

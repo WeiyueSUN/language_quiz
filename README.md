@@ -94,12 +94,12 @@ This is a SRT project in Tsinghua University, supervised by Prof. M. Zhang
 - 格式：form
 - 参数：
   - childID：整数
-  - lenth：题号 整数，为数字串长度
+  - length：题号 整数，为数字串长度
   - answer：输入的数字串，限制不超过15
-- 返回：工作记忆测试页面, 参数childID，lenth(注：这里事先约定好音频命名规则，如5.MP3表示5个数字音频，则lenth=5)，isLastQuestion=0/1
+- 返回：工作记忆测试页面, 参数childID，length(注：这里事先约定好音频命名规则，如5.MP3表示5个数字音频，则length=5)，isLastQuestion=0/1
   或者返回：结束页面
 - 方法：get
-- 返回：工作记忆测试页面, 参数childID，lenth, isLastQuestion=0/1
+- 返回：工作记忆测试页面, 参数childID，length, isLastQuestion=0/1
 
 # 当上个url返回的isLastQuestion==1时，接下来请求这个url
 ### /memorytestresult
@@ -107,7 +107,7 @@ This is a SRT project in Tsinghua University, supervised by Prof. M. Zhang
 - 格式：form
 - 参数：同上
   - childID：
-  - lenth：
+  - length：
   - answer：
  - 返回：记忆测试之后的页面，参数childID
 

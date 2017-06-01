@@ -385,6 +385,11 @@
         opt.value = $('#kid_fre').val();
         form.appendChild(opt);
 
+        opt = document.createElement('input');
+        opt.name = 'childID';
+        opt.value = document.cookie;
+        form.appendChild(opt);
+
         // do something...
 
         document.body.appendChild(form);

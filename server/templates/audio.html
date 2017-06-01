@@ -90,7 +90,8 @@
 
     </div>
 </div>
-
+<length hidden>{{length}}</length>
+<ls_last hidden>{{isLastQuestion}}</ls_last>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -105,7 +106,7 @@
 
 
         var audio = document.getElementById('music_src');
-        audio.setAttribute('src', 'static/resource/num_seq/' + +'.mp3');
+        audio.setAttribute('src', 'static/resource/num_seq/' + $('length').html() +'.mp3');
         audio.addEventListener("loadeddata",
             function () {
                 $('#music_label').attr('class', 'glyphicon glyphicon-play');
@@ -119,13 +120,27 @@
         audio.play();
     });
 
-    submit = function (sel) {
+    begin = function () {
 
         var form = document.createElement('form');
-        form.action = '???';
+        form.action = '/memorytest';
         form.target = '_self';
         form.method = 'post';
 
+        var opt = document.createElement('input');
+        opt.name = 'childID';
+        opt.value = document.cookie;
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'answer';
+        opt.value = $('#recite').val();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'length';
+        opt.value = $('length').html();
+        form.appendChild(opt);
 
         document.body.appendChild(form);
         form.submit();
