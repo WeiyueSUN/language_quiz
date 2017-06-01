@@ -154,7 +154,7 @@ def wordTestResult():
 
         childID = int(request.form.get('childID'))
         questionID = int(request.form.get('questionID'))
-        answer = int(request.form.get('answer'))
+        answer = request.form.get('answer')
         if 10 != updateWordTestResult(childID, questionID, answer):
             print "wrong num of questions!"
 
