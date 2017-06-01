@@ -14,20 +14,38 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+NUMWORDTEST = 20
+NUMRAVENTEST = 6
+NUMMEMORYTEST = 5
+# 查看ip
+@app.route("/ip", methods=["GET"])
+def get_my_ip():
+    return jsonify(origin=request.headers.get('X-Forwarded-For', request.remote_addr)), 200
 
-# 首页
+# 查看数据库题库
+@app.route("/q", methods=["GET"])
+def showQ():
+    questions = session.query(Question).all()
+    return jsonify(questions=[q.serialize for q in questions])
+
+# 查看数据库小孩答题记录
+@app.route("/child", methods=["GET"])
+def showChild():
+    children = session.query(Child).all()
+    return jsonify(children=[child.serialize for child in children])
+
+# 返回首页
 @app.route('/', methods=['GET'])
 def showIndex():
     return render_template('index.html')
 
-
-# 信息页
+# 返回填写信息页
 @app.route('/info', methods=['GET'])
 def showInfo():
     return render_template('info.html')
 
 
-# 提交信息
+# 提交信息，返回单词测试页
 @app.route('/begin', methods=['POST'])
 def begin():
     newchild = Child()
@@ -62,11 +80,9 @@ def begin():
                            word3=question.wrong3,
                            isLastQuestion=0)
 
-
+# 提交单测测试的一个题目，返回
 @app.route('/wordtest', methods=['POST'])
 def wordTest():
-    print 'test result: '
-
     childID = int(request.form.get('childID'))
     questionID = int(request.form.get('questionID'))
     answer = request.form.get('answer')
@@ -74,6 +90,7 @@ def wordTest():
 
     num_ans = updateWordTestResult(childID, questionID, answer)
     # 更新答题信息
+
 
     questionID = questionID + 1
     question = session.query(Question).filter_by(id=questionID).one()
@@ -87,44 +104,11 @@ def wordTest():
                            word1=question.wrong1,
                            word2=question.wrong2,
                            word3=question.wrong3,
-                           isLastQuestion=1 if num_ans == 10 else 0)
-
-
-# 信息页
-@app.route('/parent', methods=['GET'])
-def parent():
-    return render_template('parent.html')
-
-@app.route('/child/JSON')
-def childJSON():
-    children = session.query(Child).all()
-    return jsonify(MenuItems=[child.serialize for child in children])
-
-
-@app.route("/ip", methods=["GET"])
-def get_my_ip():
-    return jsonify(origin=request.headers.get('X-Forwarded-For', request.remote_addr)), 200
-
-
-@app.route("/q", methods=["GET"])
-def showQ():
-    questions = session.query(Question).all()
-    return jsonify(questions=[q.serialize for q in questions])
-
-
-@app.route("/child", methods=["GET"])
-def showChild():
-    children = session.query(Child).all()
-    return jsonify(children=[child.serialize for child in children])
-
+                           isLastQuestion=1 if num_ans == NUMWORDTEST - 1 else 0)
 
 def updateWordTestResult(childID, questionID, answer):
     question = session.query(Question).filter_by(id=questionID).one()
     updateChild = session.query(Child).filter_by(id=childID).one()
-
-    print childID, questionID, answer, question.correct
-    if answer != question.correct:
-        print ''
 
     num_ans = updateChild.num_ans + 1
     if num_ans == 1:
@@ -144,6 +128,9 @@ def updateWordTestResult(childID, questionID, answer):
 
     session.add(updateChild)
     session.commit()
+
+    print 'word test: childID:{}, questionID:{}, answer:{}, correct:{}, num_ans:{}'.format(childID, questionID, answer, question.correct, num_ans)
+
     return num_ans
 
 
@@ -155,32 +142,80 @@ def wordTestResult():
         childID = int(request.form.get('childID'))
         questionID = int(request.form.get('questionID'))
         answer = request.form.get('answer')
-        if 10 != updateWordTestResult(childID, questionID, answer):
+
+        if NUMWORDTEST != updateWordTestResult(childID, questionID, answer):
             print "wrong num of questions!"
 
         pred_age = 15
         return render_template('selection_result.html', pred_age = pred_age, childID=childID)
 
-
 @app.route('/survey', methods=['GET', 'POST'])
-def surveySubmit():
+def surveySumbit():
     if request.method == 'POST':
         childID = request.form.get('childID')
-        Q11 = request.form.get('Q11')
-        Q12 = request.form.get('Q12')
-        Q13 = request.form.get('Q13')
-        Q21 = request.form.get('Q21')
-        Q22 = request.form.get('Q22')
-        Q23 = request.form.get('Q23')
-        Q31 = request.form.get('Q31')
-        Q32 = request.form.get('Q32')
-        Q33 = request.form.get('Q33')
-        Q4 = request.form.get('Q4')
-        Q5 = request.form.get('Q5')
-        Q6 = request.form.get('Q6')
-        Q7 = request.form.get('Q7')
-        return render_template('raven.html', childID=childID)
+        A11 = request.form.get('A11')
+        A12 = request.form.get('A12')
+        A13 = request.form.get('A13')
+        A21 = request.form.get('A21')
+        A22 = request.form.get('A22')
+        A23 = request.form.get('A23')
+        A31 = request.form.get('A31')
+        A32 = request.form.get('A32')
+        A33 = request.form.get('A33')
+        A4 = request.form.get('A4')
+        A5 = request.form.get('A5')
+        A6 = request.form.get('A6')
+        A7 = request.form.get('A7')
+        return render_template('connection_page.html', childID=childID)
 
+@app.route('/raventest', methods=['GET', 'POST'])
+def ravenTest():
+    if request.method == 'POST':
+        childID = int(request.form.get('childID'))
+        questionID = int(request.form.get('questionID'))
+        answer = request.form.get('answer')
+        return render_template('raven_test.html', childID=childID, questionID=questionID+1, isLastQuestion=1 if questionID == NUMRAVENTEST - 1 else 0)
+
+    else:
+        return render_template('raven_test.html', childID=childID, questionID=1, isLastQuestion=1)
+
+@app.route('/raventestresult', methods=['GET', 'POST'])
+def ravenTestResult():
+    if request.method == 'POST':
+        print "raven test over"
+
+        childID = int(request.form.get('childID'))
+        questionID = int(request.form.get('questionID'))
+        answer = request.form.get('answer')
+        if NUMRAVENTEST != questionID:
+            print "wrong num of raven questions!"
+
+
+        return render_template('connection_page2.html', childID=childID)
+
+@app.route('/memorytest', methods=['GET', 'POST'])
+def memoryTest():
+    if request.method == 'POST':
+        childID = int(request.form.get('childID'))
+        lenth = int(request.form.get('lenth'))
+        answer = request.form.get('answer')
+        return render_template('memory_test.html', childID=childID, lenth=lenth+1, isLastQuestion=1 if lenth == NUMMEMORYTEST - 1 else 0)
+
+    else:
+        return render_template('memory_test.html', childID=childID, lenth=1, isLastQuestion=1)
+
+@app.route('/memorytestresult', methods=['GET', 'POST'])
+def memoryTestResult():
+    if request.method == 'POST':
+        print "memory test over"
+
+        childID = int(request.form.get('childID'))
+        lenth = int(request.form.get('lenth'))
+        answer = int(request.form.get('answer'))
+        if NUMMEMORYTEST != lenth:
+            print "wrong num of memory questions!"
+
+        return render_template('connection_page3.html', childID=childID)
 
 if __name__ == '__main__':
     app.debug = True
