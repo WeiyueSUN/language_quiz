@@ -1,6 +1,22 @@
 id,correct,wrong1,wrong2,wrong3,level
 1,bear,give me five,daddy,drink,1
 2,bird,give me five,home,ankle,1
+40,bug,thirsty,thanks,hurry,2
+41,bunny,playground,butterfly,brush,2
+79,bee,bug,pillow,think,3
+80,butterfly,morning,eat,bed,3
+135,giraffe,cow,cookie,horse,4
+136,teddybear,pig,grape,wolf,4
+137,tiger,hi,hat,yucky,4
+138,zebra,swing,pillow,help,4
+155,hamburger,cat,grandpa,hush,5
+156,shorts,comb,apple,shirt,5
+157,bucket,TV,mouth,hurt,5
+158,comb,yes,knee,kitty,5
+175,penguin,hush,kiss,hot,6
+176,wolf,rock,ride,chair,6
+177,melon,blanket,leg,cracker,6
+178,gloves,brush,daddy,toe,6
 3,cat,broken,feed,morning,1
 4,dog,jump,cake,play,1
 5,duck,fork,popcorn,dark,1
@@ -31,15 +47,12 @@ id,correct,wrong1,wrong2,wrong3,level
 30,mommy,write,moon,egg,1
 31,hello,eye,toy,go,1
 32,hi,butterfly,pants,cat,1
-33,night night,beach,eye,hello,1
-34,no,noisy,bus,kitty,1
+34,no,ball,bus,kitty,1
 35,hush,movie,bear,melon,1
 36,thanks,tiger,knee,tree,1
 37,yes,bed,home,tooth,1
 38,hot,paper,light,cheese,1
 39,up,shirt,pick,head,1
-40,bug,thirsty,thanks,hurry,2
-41,bunny,playground,butterfly,brush,2
 42,cow,telephone,cheese,cold,2
 43,horse,playground,truck,nap,2
 44,pig,egg,playground,grandma,2
@@ -51,10 +64,10 @@ id,correct,wrong1,wrong2,wrong3,level
 50,toy,mouth,jump,ride,2
 51,diaper,wet,arm,clock,2
 52,arm,ride,puppy,nose,2
-53,finger,night night,juice,cake,2
+53,finger,bubbles,juice,cake,2
 54,hair,bubbles,coat,wet,2
 55,hand,egg,tissue,up,2
-56,head,chair,grandma,bottle,2
+56,head,chair,toy,bottle,2
 57,mouth,diaper,bucket,popcorn,2
 58,toe,light,strawberry,milk,2
 59,blanket,firetruck,rain,monkey,2
@@ -66,7 +79,7 @@ id,correct,wrong1,wrong2,wrong3,level
 65,bed,grandma,keys,horse,2
 66,chair,pizza,police,comb,2
 67,door,yes,bite,daddy,2
-68,potty,up,bucket,night night,2
+68,potty,up,bucket,penguin,2
 69,flower,arm,soap,cake,2
 70,moon,keys,flower,sweater,2
 71,star,sink,toothbrush,present,2
@@ -77,15 +90,13 @@ id,correct,wrong1,wrong2,wrong3,level
 76,kiss,monkey,down,lamp,2
 77,cold,chocolate,paper,hair,2
 78,down,kitchen,monkey,fish(animal),2
-79,bee,bug,pillow,think,3
-80,butterfly,morning,eat,bed,3
 81,chicken,yucky,potty,TV,3
 82,elephant,cereal,think,write,3
 83,frog,ball,egg,hello,3
 84,lion,bus,teddybear,toothbrush,3
 85,monkey,melon,go,grape,3
 86,turtle,telephone,door,coat,3
-87,train,crayon,turn around,yes,3
+87,train,crayon,bottle,yes,3
 88,crayon,egg,tissue,tooth,3
 89,bread,paper,melon,turtle,3
 90,cake,home,chase,go,3
@@ -133,10 +144,6 @@ id,correct,wrong1,wrong2,wrong3,level
 132,wet,beach,hand,toothbrush,3
 133,yucky,milk,drink,down,3
 134,out,lion,turtle,hug,3
-135,giraffe,cow,cookie,horse,4
-136,teddybear,pig,grape,wolf,4
-137,tiger,hi,hat,yucky,4
-138,zebra,swing,pillow,help,4
 139,firetruck,thirsty,bed,tongue,4
 140,present,duck,bird,airplane,4
 141,chocolate,bug,bus,shoe,4
@@ -152,13 +159,9 @@ id,correct,wrong1,wrong2,wrong3,level
 151,kick,mommy,chair,leg,4
 152,ride,drawer,help,pick,4
 153,broken,kitty,no,juice,4
-154,hurt,hamburger,firetruck,tongue,4
-155,hamburger,cat,grandpa,hush,5
-156,shorts,comb,apple,shirt,5
-157,bucket,TV,mouth,hurt,5
-158,comb,yes,knee,kitty,5
+154,hurt,hamburger,firetruck,kitchen,4
 159,scissors,bug,hamburger,hat,5
-160,drawer,pig,train,kitchen,5
+160,drawer,pig,train,tougue,5
 161,sink,cat,shirt,ankle,5
 162,cloud,play,strawberry,chase,5
 163,beach,hot,milk,monkey,5
@@ -173,10 +176,6 @@ id,correct,wrong1,wrong2,wrong3,level
 172,dark,wait,yes,popcorn,5
 173,sick,bee,turn around,scissors,5
 174,thirsty,horse,hush,boots,5
-175,penguin,hush,kiss,hot,6
-176,wolf,rock,ride,chair,6
-177,melon,blanket,leg,cracker,6
-178,gloves,brush,daddy,toe,6
 179,slipper,bottle,smile,shirt,6
 180,ankle,ice cream,brush,cow,6
 181,lamp,eye,pig,TV,6
@@ -192,4 +191,5 @@ id,correct,wrong1,wrong2,wrong3,level
 191,think,mommy,bee,comb,6
 192,noisy,cat,TV,yes,6
 193,morning,pig,crayon,money,6
+194,on top of,grandma,door,coat,6
 194,on top of,grandma,door,coat,6
