@@ -18,6 +18,12 @@
 
     <!-- Custom styles for this template -->
     <link href="static/css/info.css" rel="stylesheet">
+    <style>
+        table {
+            border-spacing: 10px;
+            border-collapse: separate;
+        }
+    </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,44 +54,56 @@
                 <h4 align="center">请选择你认为正确的图片填在空缺处。</h4>
 
                 <div align="center">
-                    <img src="" height="300">
+                    <img id="Q" src="" height="300">
                 </div>
                 <br>
 
                 <form class="form-horizontal" id="information" method="post" action="/begin">
                     <div align="center">
-                        <ul class="list-group"
-                            style="width:80%;color: black; text-shadow: 0 1px 3px rgba(255, 255, 255, .5);">
-                            <li class="list-group-item">
-                                <input id="1" type="radio" name="sel" value="1">
-                                <label style="width: 80%" for="1">1</label>
-                            </li>
-                            <li class="list-group-item">
-                                <input id="2" type="radio" name="sel" value="2">
-                                <label style="width: 80%" for="2">2</label>
-                            </li>
-                            <li class="list-group-item">
-                                <input id="3" type="radio" name="sel" value="3">
-                                <label style="width: 80%;" for="3">3</label>
-                            </li>
-                            <li class="list-group-item">
-                                <input id="4" type="radio" name="sel" value="4">
-                                <label style="width: 80%" for="4">4</label>
-                            </li>
-                            <li class="list-group-item">
-                                <input id="5" type="radio" name="sel" value="5">
-                                <label style="width: 80%" for="5">5</label>
-                            </li>
-                            <li class="list-group-item">
-                                <input id="6" type="radio" name="sel" value="6">
-                                <label style="width: 80%" for="6">6</label>
-                            </li>
-                        </ul>
+                        <table cellpadding="10" cellspacing="10">
+                            <tr>
+                                <td>
+                                    <a onclick="javascript:begin(1);">
+                                        <img id="1" src="" width="150" style="cursor: pointer;"
+                                             class="img-thumbnail">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a onclick="javascript:begin(2);">
+                                        <img id="2" src="" width="150" style="cursor: pointer"
+                                             class="img-thumbnail">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a onclick="javascript:begin(3);">
+                                        <img id="3" src="" width="150" style="cursor:pointer;"
+                                             class="img-thumbnail">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a onclick="javascript:begin(4);">
+                                        <img id="4" src="" width="150" style="cursor: pointer;"
+                                             class="img-thumbnail">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a onclick="javascript:begin(5);">
+                                        <img id="5" src="" width="150" style="cursor: pointer"
+                                             class="img-thumbnail">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a onclick="javascript:begin(6);">
+                                        <img id="6" src="" width="150" style="cursor:pointer;"
+                                             class="img-thumbnail">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
 
-                    <div align="center">
-                        <button type="button" onclick="begin();" class="btn btn-default btn-lg">继续</button>
-                    </div>
                     <br>
                 </form>
             </div>
@@ -121,43 +139,50 @@
         });
 
         var ques_id = $('ques').html();
-        var img = $('img');
+        var ques_letter = "";
         switch (ques_id) {
             case '1':
-                $(img).attr('src', 'static/resource/raven_img/A1.jpg');
+                ques_letter = 'A1';
                 break;
             case '2':
-                $(img).attr('src', 'static/resource/raven_img/A5.jpg');
+                ques_letter = 'A5';
                 break;
             case '3':
-                $(img).attr('src', 'static/resource/raven_img/A6.jpg');
+                ques_letter = 'A6';
                 break;
             case '4':
-                $(img).attr('src', 'static/resource/raven_img/A7.jpg');
+                ques_letter = 'A7';
                 break;
             case '5':
-                $(img).attr('src', 'static/resource/raven_img/A11.jpg');
+                ques_letter = 'A11';
                 break;
             case '6':
-                $(img).attr('src', 'static/resource/raven_img/A12.jpg');
+                ques_letter = 'A12';
                 break;
             case '7':
-                $(img).attr('src', 'static/resource/raven_img/B5.jpg');
+                ques_letter = 'B5';
                 break;
             case '8':
-                $(img).attr('src', 'static/resource/raven_img/B12.jpg');
+                ques_letter = 'B12';
                 break;
             default:
                 break;
         }
+        $('#Q').attr('src', 'static/resource/raven_img/' + ques_letter + '_Q.png');
+        $('#1').attr('src', 'static/resource/raven_img/' + ques_letter + '_1.png');
+        $('#2').attr('src', 'static/resource/raven_img/' + ques_letter + '_2.png');
+        $('#3').attr('src', 'static/resource/raven_img/' + ques_letter + '_3.png');
+        $('#4').attr('src', 'static/resource/raven_img/' + ques_letter + '_4.png');
+        $('#5').attr('src', 'static/resource/raven_img/' + ques_letter + '_5.png');
+        $('#6').attr('src', 'static/resource/raven_img/' + ques_letter + '_6.png');
     });
 
-    begin = function () {
+    begin = function (option) {
         var is_last = $('is_last').html();
 
         var form = document.createElement('form');
         form.action = '/raventest';
-        if(is_last == '1') {
+        if (is_last == '1') {
             form.action = '/raventestresult'
         }
         form.target = '_self';
@@ -175,7 +200,7 @@
 
         opt = document.createElement('input');
         opt.name = 'answer';
-        opt.value = $('input[name="sel"]:checked').val();
+        opt.value = option;
         form.appendChild(opt);
 
         document.body.appendChild(form);
