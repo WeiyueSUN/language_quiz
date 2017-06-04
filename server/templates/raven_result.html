@@ -33,17 +33,6 @@
 
         <div class="cover-container">
 
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h3 class="masthead-brand">TEST</h3>
-                    <nav>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">联系我们</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-
             <div class="inner cover" style="padding-top: 50px; text-align: center">
                 <h4>您的孩子的瑞文测试结果为：</h4>
                 <h1>......blabla</h1>
@@ -52,7 +41,7 @@
                 <h4>点击"继续"，<br>进一步进行认知能力测试。</h4>
                 <br>
                 <div align="center">
-                    <button type="button" onclick="window.location.href='/memorybegin';" class="btn btn-default btn-lg">继续</button>
+                    <button type="button" onclick="javascript:begin();" class="btn btn-default btn-lg">继续</button>
                 </div>
                 <br>
 
@@ -81,6 +70,16 @@
         });
 
     });
+
+    begin = function () {
+        var form = document.createElement('form');
+        form.action = '/memorybegin';
+        form.target = '_self';
+        form.method = 'post';
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 </html>

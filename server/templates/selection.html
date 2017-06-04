@@ -34,26 +34,14 @@
 
         <div class="cover-container">
 
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h3 class="masthead-brand">TEST</h3>
-                    <nav>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">联系我们</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-
-            <div class="inner cover" style="padding-top: 50px;">
+            <div class="inner cover" style="padding-top: 30px;">
                 <h3 align="center">请选择与单词相匹配的图片。<br>点击喇叭图标进行朗读。</h3>
-                <br>
+
                 <div align="center">
                     <h3 id="correct_word"></h3>
                 </div>
-                <br>
                 <div align="center">
-                    <button type="button" class="button button-3d button-pill button-large" id="play_music">
+                    <button type="button" class="button button-3d button-pill" id="play_music">
                         <span id="music_label">音频加载中...</span>
                     </button>
                 </div>
@@ -65,12 +53,12 @@
                         <div class="row">
                             <div class="col-xs-6 option" style="text-align: center">
                                 <a href="javascript:void(0)" onclick="submit(0);">
-                                    <img class="img-rounded" height="150" width="150">
+                                    <img class="img-rounded" height="100" width="100">
                                 </a>
                             </div>
                             <div class="col-xs-6 option" style="text-align: center">
                                 <a href="javascript:void(0)" onclick="submit(1);">
-                                    <img class="img-rounded" height="150" width="150">
+                                    <img class="img-rounded" height="100" width="100">
                                 </a>
                             </div>
                         </div>
@@ -78,12 +66,12 @@
                         <div class="row">
                             <div class="col-xs-6 option" style="text-align: center">
                                 <a href="javascript:void(0)" onclick="submit(2);">
-                                    <img class="img-rounded" height="150" width="150">
+                                    <img class="img-rounded" height="100" width="100">
                                 </a>
                             </div>
                             <div class="col-xs-6 option" style="text-align: center">
                                 <a href="javascript:void(0)" onclick="submit(3);">
-                                    <img class="img-rounded" height="150" width="150">
+                                    <img class="img-rounded" height="100" width="100">
                                 </a>
                             </div>
                         </div>
@@ -122,6 +110,8 @@
 <script>
     var word = new Array(4);
     var child_id, ques_id, correct, is_last;
+    var timer = null;
+    var sec = 0, msec = 0;
 
     $(document).ready(function () {
         child_id = $('child').html();
@@ -156,6 +146,14 @@
             }, false);
 
         document.cookie = child_id;
+        clearInterval(timer);
+        timer = setInterval(function () {
+            msec++;
+            if(msec == 100) {
+                sec += 1;
+                msec = 0;
+            }
+        }, 1000 / 100);
 
     });
 
@@ -176,7 +174,7 @@
 
         var opt = document.createElement('input');
         opt.name = 'childID';
-        opt.value = $('child').html();
+        opt.value = document.cookie;
         form.appendChild(opt);
 
         opt = document.createElement('input');
@@ -187,6 +185,11 @@
         opt = document.createElement('input');
         opt.name = 'answer';
         opt.value = word[sel];
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'time';
+        opt.value = sec + '.' + msec;
         form.appendChild(opt);
 
         document.body.appendChild(form);
