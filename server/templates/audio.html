@@ -34,26 +34,14 @@
 
         <div class="cover-container">
 
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h3 class="masthead-brand">TEST</h3>
-                    <nav>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">联系我们</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-
-            <div class="inner cover" style="padding-top: 50px;">
+            <div class="inner cover" style="padding-top: 30px;">
                 <h3 align="center">点击喇叭，<br>播放一串随机数字序列，<br>请您的孩子认真记忆此序列。</h3>
-                <br>
                 <div align="center">
                     <h3 id="correct_word"></h3>
                 </div>
                 <br>
                 <div align="center">
-                    <button type="button" class="button button-3d button-pill button-large" id="play_music">
+                    <button type="button" class="button button-3d button-pill" id="play_music">
                         <span id="music_label">音频加载中...</span>
                     </button>
                 </div>
@@ -91,7 +79,6 @@
     </div>
 </div>
 <length hidden>{{questionID}}</length>
-<ls_last hidden>0</ls_last>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -101,18 +88,29 @@
 <script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="static/vendor/iCheck/icheck.min.js"></script>
 <script>
-
+    var timer = null;
+    var sec = 0, msec = 0;
     $(document).ready(function () {
 
 
         var audio = document.getElementById('music_src');
-        audio.setAttribute('src', 'static/resource/num_seq/' + $('length').html() +'.mp3');
+
         audio.addEventListener("loadeddata",
             function () {
                 $('#music_label').attr('class', 'glyphicon glyphicon-play');
                 $('#music_label').html('');
-            }, false);
+            }, false
+        );
+        audio.setAttribute('src', 'static/resource/num_seq/' + $('length').html() +'.mp3');
 
+        clearInterval(timer);
+        timer = setInterval(function () {
+            msec++;
+            if (msec == 100) {
+                sec += 1;
+                msec = 0;
+            }
+        }, 1000 / 100);
     });
 
     $('#play_music').click(function () {
@@ -121,6 +119,18 @@
     });
 
     begin = function () {
+
+        var answer = $('#recite').val();
+//        var len = parseInt($('length').html());
+//        if(len % 2 == 0) {
+//            len = len / 2;
+//        } else {
+//            len = (len + 1) / 2;
+//        }
+        if(answer.length == 0) {
+            alert('请填写答案！');
+            return;
+        }
 
         var form = document.createElement('form');
         form.action = '/memorytest';
@@ -140,6 +150,11 @@
         opt = document.createElement('input');
         opt.name = 'length';
         opt.value = $('length').html();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'time';
+        opt.value = sec + '.' + msec;
         form.appendChild(opt);
 
         document.body.appendChild(form);

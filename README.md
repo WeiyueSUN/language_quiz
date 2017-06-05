@@ -61,7 +61,7 @@ This is a SRT project in Tsinghua University, supervised by Prof. M. Zhang
 - 格式：form
 - 参数：
   - childID：整数
-  - A11 A12 A13 分别为每题的答案
+  - A11 A12 A13 分别为每题的答案  
   - A21 A22 A23
   - A31 A32 A33
   - A4 A5 A6 A7

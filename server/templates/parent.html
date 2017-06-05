@@ -33,22 +33,10 @@
 
         <div class="cover-container">
 
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h3 class="masthead-brand">TEST</h3>
-                    <nav>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">联系我们</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-
-            <div class="inner cover" style="padding-top: 50px;">
-                <h3 align="center">以下X道题请家长填写，大约花费X分钟。</h3>
-                <br>
+            <div class="inner cover" style="padding-top: 30px;">
+                <h3 align="center">以下几道题请家长填写，<br>大约花费5~10分钟。</h3>
                 <form class="form-horizontal" id="information" method="post" action="/begin">
-                    <div class="form-group" style="padding: 50px;">
+                    <div class="form-group" style="padding: 5px;">
                         <h3><em>关于幼儿园英语课</em></h3>
                         <br>
                         <div style="padding-left: 30px;">
@@ -275,6 +263,8 @@
 <script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="static/vendor/iCheck/icheck.min.js"></script>
 <script>
+    var timer = null;
+    var sec = 0, msec = 0;
     $(document).ready(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_flat-red',
@@ -288,7 +278,7 @@
 
 
         $('#kg_eng_age').on('changed.bs.select', function () {
-            if($('#kg_eng_age').val() == '0') {
+            if ($('#kg_eng_age').val() == '0') {
                 $('.kg_hide').attr('hidden', true);
             } else {
                 $('.kg_hide').attr('hidden', false);
@@ -296,7 +286,7 @@
         });
 
         $('#act_eng_age').on('changed.bs.select', function () {
-            if($('#act_eng_age').val() == '0') {
+            if ($('#act_eng_age').val() == '0') {
                 $('.act_hide').attr('hidden', true);
             } else {
                 $('.act_hide').attr('hidden', false);
@@ -304,12 +294,21 @@
         });
 
         $('#out_eng_age').on('changed.bs.select', function () {
-            if($('#out_eng_age').val() == '0') {
+            if ($('#out_eng_age').val() == '0') {
                 $('.out_hide').attr('hidden', true);
             } else {
                 $('.out_hide').attr('hidden', false);
             }
         });
+
+        clearInterval(timer);
+        timer = setInterval(function () {
+            msec++;
+            if (msec == 100) {
+                sec += 1;
+                msec = 0;
+            }
+        }, 1000 / 100);
 
     });
 
@@ -390,7 +389,10 @@
         opt.value = document.cookie;
         form.appendChild(opt);
 
-        // do something...
+        opt = document.createElement('input');
+        opt.name = 'time';
+        opt.value = sec + '.' + msec;
+        form.appendChild(opt);
 
         document.body.appendChild(form);
         form.submit();

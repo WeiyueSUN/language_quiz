@@ -47,25 +47,30 @@ body {
 
 .site-wrapper-inner {
     display: table-cell;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .cover-container {
     margin-right: auto;
     margin-left: auto;
+    width: 100%;
 }
 
 /* Padding for spacing */
 .inner {
-    padding: 30px;
+    padding: 40px;
+}
+
+.innerhead {
+    padding: 15px;
 }
 
 /*
  * Header
  */
 .masthead-brand {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .masthead-nav > li {
@@ -128,6 +133,9 @@ body {
 .mastfoot {
     color: #999; /* IE8 proofing */
     color: rgba(255, 255, 255, .5);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 /*
