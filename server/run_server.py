@@ -445,7 +445,7 @@ def ravenTest():
             letter = 'B5'
         elif next_ques == 8:
             letter = 'B12'
-            
+
         return render_template('raven_test.html',
                                ques_letter=letter,
                                childID=childID,
