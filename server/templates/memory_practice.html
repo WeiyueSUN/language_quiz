@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>工作记忆练习</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/buttons/buttons.css" rel="stylesheet">
+    <link href="static/vendor/layer/mobile/need/layer.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/info.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="inner cover" style="padding-top: 30px;">
+                <h4 align="center">点击喇叭，<br>播放一串随机数字序列，<br>请您的孩子认真记忆此序列。</h4>
+                <h4 align="center">（正式测试中只能播放一次）</h4>
+                <div align="center">
+                    <h3 id="correct_word"></h3>
+                </div>
+                <br>
+                <div align="center">
+                    <button type="button" class="button button-3d button-pill" id="play_music">
+                        <span id="music_label" class="glyphicon glyphicon-play"></span>
+                    </button>
+                </div>
+                <br>
+                <audio id="music_src" hidden>
+                </audio>
+                <div>
+                    <div style="width: 100%;">
+                        <div align="center">
+                            <h4>请将结果填入下面的文本框中。</h4>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="recite" id="recite"
+                                   style="text-align: center;">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div align="center">
+                    <button type="button" onclick="begin();" class="btn btn-default btn-lg">继续</button>
+                </div>
+                <br>
+            </div>
+            <br>
+            <br>
+            <div style="color: rgba(255, 255, 255, .5);">
+                <div style="text-align: center;padding-bottom: 5px;">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/vendor/layer/layer.js"></script>
+<script>
+
+    var now_pos = 0;
+    var sequence = "";
+    $(document).ready(function () {
+
+        var len = 2;
+        for (var i = 0; i < len; ++i) {
+            var ran_int = Math.floor(Math.random() * 10);
+            sequence += String(ran_int);
+        }
+
+        var audio = document.getElementById('music_src');
+        $(audio).attr('src', 'static/resource/audio_num/' + sequence[0] + '.mp3');
+        now_pos++;
+
+        audio.addEventListener("ended",
+            function () {
+                if (now_pos < sequence.length) {
+                    $(audio).attr('src', 'static/resource/audio_num/' + sequence[now_pos] + '.mp3');
+                    audio.play();
+                    now_pos++;
+                } else if (now_pos == sequence.length) {
+                    $(audio).attr('src', 'static/resource/audio_num/' + sequence[0] + '.mp3');
+                    now_pos = 1;
+                }
+            }, false
+        );
+    });
+
+    $('#play_music').click(function () {
+        var audio = document.getElementById('music_src');
+        audio.play();
+//        $('#play_music').attr('disabled', true);
+    });
+
+    begin = function () {
+
+        var answer = $('#recite').val();
+
+        if (answer.length == 0) {
+            layer.msg('请填写答案！');
+            return;
+        } else if (answer != sequence) {
+            layer.msg('请输入正确的语音数字序列！');
+            return;
+        } else {
+            layer.msg('输入正确！马上开始正式测试！', {time: 2000}, function () {
+                var form = document.createElement('form');
+                form.action = '/memory_begin';
+                form.target = '_self';
+                form.method = 'post';
+
+                var opt = document.createElement('input');
+                opt.name = 'childID';
+                opt.value = document.cookie;
+                form.appendChild(opt);
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        }
+    }
+</script>
+</body>
+</html>

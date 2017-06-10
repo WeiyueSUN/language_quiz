@@ -7,14 +7,11 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>初步信息确认</title>
+    <title>Part 3 非语言智力测验</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="static/vendor/iCheck/skins/flat/red.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="static/css/index.css" rel="stylesheet">
@@ -34,8 +31,14 @@
         <div class="cover-container">
 
             <div class="inner cover" style="padding-top: 20px; text-align: center">
-                <h4>以下8道题会测试孩子的认知发展水平，<br>大约需要5~10分钟。</h4>
-                <h4>作答时请孩子自己做出选择, <br>避免因过度暗示而造成紧张。</h4>
+                <h3 align="center">Part 3 非语言智力测验</h3>
+                <br>
+                <h4>以下8道题会测试孩子的认知发展水平，</h4>
+                <h4>请选择合适的图片补在缺失的位置，</h4>
+                <h4>大约需要5~10分钟。</h4>
+                <br>
+                <h4>作答时请孩子自己做出选择, </h4>
+                <h4>避免因过度暗示而造成紧张。</h4>
                 <br>
                 <h4>试题来源于英国瑞文标准推理测验。<br><br>部分地区小学以此作为入学测试题。</h4>
                 <br>
@@ -59,21 +62,14 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="static/vendor/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_flat-red',
-            radioClass: 'iradio_flat-red',
-            increaseArea: '20%' // optional
-        });
 
     });
 
     begin = function () {
         var form = document.createElement('form');
-        form.action = '/ravenbegin';
+        form.action = '/raven_practice';
         form.target = '_self';
         form.method = 'post'
 

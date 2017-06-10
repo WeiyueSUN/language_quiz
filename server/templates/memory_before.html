@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>瑞文测试结果</title>
+    <title>Part 4 工作记忆测试</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -30,31 +30,32 @@
 
         <div class="cover-container">
 
-            <div class="inner cover" style="padding-top: 15px; text-align: center">
-                <h4>您的孩子的瑞文测试正确率为：</h4>
-                <h1>{{ratio}}%</h1>
+            <div class="inner cover" style="padding-top: 20px; text-align: center">
+                <h3 align="center">Part 4 工作记忆测试</h3>
                 <br>
-                <h4 align="left">参考数据：</h4>
-                <h4 align="left">在完整的瑞文推理量表中，<br>各年龄段儿童测试成绩的<b>中位数</b>为：</h4>
-                <h4 align="left">5.5周岁：27%</h4>
-                <h4 align="left">6周岁：28%</h4>
-                <h4 align="left">6.5周岁：30%</h4>
-                <h4 align="left">7周岁：32%</h4>
+                <h4>以下题目将测试孩子的工作记忆能力，</h4>
+                <h4>改编自心理学中常用的数字广度检验。</h4>
                 <br>
-                <h4>点击"继续"，<br>进一步进行认知能力测试。</h4>
+                <h4>点击播放按钮后，</h4>
+                <h4>孩子将听到一个数字序列。</h4>
+                <h4>请记忆该序列，并填写在横线上。</h4>
                 <br>
                 <div align="center">
-                    <button type="button" onclick="javascript:begin();" class="btn btn-default btn-lg">继续</button>
+                    <button type="button" onclick="begin();" class="btn btn-default btn-lg">开始测试
+                    </button>
                 </div>
                 <br>
 
             </div>
+            <br>
             <div style="color: rgba(255, 255, 255, .5);">
                 <div style="text-align: center;padding-bottom: 5px;">
                     <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
                 </div>
             </div>
+
         </div>
+
     </div>
 </div>
 
@@ -70,9 +71,9 @@
 
     begin = function () {
         var form = document.createElement('form');
-        form.action = '/memory_before';
+        form.action = '/memory_practice';
         form.target = '_self';
-        form.method = 'post';
+        form.method = 'post'
 
         document.body.appendChild(form);
         form.submit();

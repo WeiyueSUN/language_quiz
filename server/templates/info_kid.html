@@ -7,9 +7,8 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>初步信息确认</title>
+    <title>Part 1 初步信息填写</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,15 +38,15 @@
         <div class="cover-container">
 
             <div class="inner cover" style="padding-top: 30px;">
-                <h3 align="center">我们将收集孩子的部分信息，<br>以便进行更好的评估。<br>不会涉及个人隐私。</h3>
+                <h3 align="center">Part 1 信息填写</h3>
+                <h4 align="center">以下3道题请家长回答。</h4>
                 <br>
                 <form class="form-horizontal" id="information" method="post" action="/begin">
                     <div class="form-group" id="info">
-                        <label class="control-label col-xs-6" style="text-align: right;font-size: 18px;">年龄：</label>
+                        <label class="control-label col-xs-6" style="text-align: right;font-size: 18px;">孩子年龄：</label>
                         <div class="form-inline col-xs-6">
                             <select id="age" name="age" class="selectpicker" data-width="fit" name="year"
                                     style="width: auto">
-                                <option value="0.5">0.5</option>
                                 <option value="1">1</option>
                                 <option value="1.5">1.5</option>
                                 <option value="2">2</option>
@@ -61,13 +60,15 @@
                                 <option value="6">6</option>
                                 <option value="6.5">6.5</option>
                                 <option value="7">7</option>
+                                <option value="7.1">大于7（未入学）</option>
+                                <option value="7.2">大于7（已入学）</option>
                             </select>
                             <label> 岁 </label>
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label class="control-label col-xs-6" style="text-align: right;font-size: 18px;">性别：</label>
+                        <label class="control-label col-xs-6" style="text-align: right;font-size: 18px;">孩子性别：</label>
                         <div class="form-inline col-xs-6" style="padding-top: 7px;">
                             <input id="sex" type="radio" name="sex" value="m" checked> 男
                             <input type="radio" name="sex" value="f"> 女
@@ -75,8 +76,8 @@
                     </div>
                     <br>
                     <div align="center">
-                        <label class="col-xs-12" style="text-align:center;font-size: 18px;">在以下哪几种情形下接触过英语？</label>
-                        <br><br>
+                        <label class="col-xs-12" style="text-align:center;font-size: 18px;">在以下哪几种情形下接触过英语？<br>（多选）</label class="col-xs-12" style="text-align:center;font-size: 18px;">
+                        <br><br><br>
                         <ul class="list-group"
                             style="width:80%;color: black; text-shadow: 0 1px 3px rgba(255, 255, 255, .5);">
                             <li class="list-group-item">
@@ -159,7 +160,7 @@
     begin = function () {
 
         var form = document.createElement('form');
-        form.action = '/begin';
+        form.action = '/info_kid_submit';
         form.target = '_self';
         form.method = 'post';
 
