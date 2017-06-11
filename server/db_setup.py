@@ -20,6 +20,9 @@ class Question(Base):
     wrong2 = Column(String(15), nullable=False)
     wrong3 = Column(String(15), nullable=False)
     level = Column(Integer, nullable=False)
+    age = Column(Integer, nullable=False)
+    fix = Column(Integer, nullable=False)
+    group = Column(Integer, nullable=False)
     times_used = Column(Integer)
 
     def __init__(self):
@@ -63,7 +66,15 @@ class Child(Base):
     last = Column(Integer)
     # 上上一个选择是否正确
     llast = Column(Integer)
+
+    # 目前最后回答的题目的group，用于产生新题
+    lgroup = Column(Integer)
+
+    # 目前回答的单词题目数
     num_word_test = Column(Integer)
+
+    # 预测单词年龄
+    pred_age = Column(Integer)
 
     # 几个详细调查的答案
     A11 = Column(String(10))
@@ -82,6 +93,7 @@ class Child(Base):
     time_survey = Column(String(10))
 
     memory = Column(Integer)
+    chance = Column(Integer)
 
     date_end =Column(String(10))
     def __init__(self):
@@ -90,6 +102,8 @@ class Child(Base):
         self.last = 0
         self.llast = 0
         self.num_word_test = 0
+        self.lgroup = 0
+        self.chance = 1
 
     @property
     def serialize(self):
