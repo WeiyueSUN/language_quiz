@@ -262,6 +262,7 @@
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="static/vendor/iCheck/icheck.min.js"></script>
+<script src="static/vendor/cookie/jquery.cookie.js"></script>
 <script>
     var timer = null;
     var sec = 0, msec = 0;
@@ -386,7 +387,7 @@
 
         opt = document.createElement('input');
         opt.name = 'childID';
-        opt.value = document.cookie;
+        opt.value = $.cookie('childID');
         form.appendChild(opt);
 
         opt = document.createElement('input');

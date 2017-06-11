@@ -101,6 +101,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/vendor/cookie/jquery.cookie.js"></script>
 <script>
     var word = new Array(4);
     var child_id, ques_id, correct, is_last;
@@ -162,7 +163,7 @@
 
         var opt = document.createElement('input');
         opt.name = 'childID';
-        opt.value = document.cookie;
+        opt.value = $.cookie('childID');
         form.appendChild(opt);
 
         opt = document.createElement('input');
