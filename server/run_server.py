@@ -477,7 +477,7 @@ def raven_result():
         # 获取记录
         childID = int(request.form.get('childID'))
         questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
+        answer = int(request.form.get('answer'))
         time = request.form.get('time')
         # 添加记录到数据库
         addTestResult(RavenTest, childID, questionID, answer, time)
@@ -498,7 +498,7 @@ def raven_result():
             print 'wrong num_ans in raven result'
 
         correct_ratio = float(int(num_correct * 1000 / NUMRAVENTEST)) / 10.0
-        print correct_ratio
+
         return render_template('raven_result.html', ratio=correct_ratio)
 
 
