@@ -22,11 +22,10 @@ MAXLEVEL = 6
 # 固定词在每个级别的词数量
 FIX_NUM = 4
 
-RAVEN_ANS = [-1, 1, 1, 1, 1, 1, 1, 1, 1]
+RAVEN_ANS = [-1, 4, 6, 3, 6, 4, 5, 1, 5]
 
 MINMEMORY = 3
 MAXMEMORY = 16
-
 
 '''
 以下为自定义路由
@@ -89,7 +88,7 @@ def func_weight(times_used):
 # x list of number
 # wi: the weight to choose xi
 def func_roulette(x, w):
-    if  len(x) != len(w) or len(x) <= 0:
+    if len(x) != len(w) or len(x) <= 0:
         print 'wrong roulette x'
         return -1
 
@@ -226,8 +225,6 @@ def sel_begin():
             print 'wrong num_ans'
         question = session.query(Question).filter_by(id=questionID).one()
 
-
-
         return render_template('selection_test.html',
                                questionID=questionID,
                                correct=question.correct,
@@ -297,13 +294,13 @@ def sel_test():
         question = session.query(Question).filter_by(id=questionID).one()
 
         return render_template('selection_test.html',
-               questionID=questionID,
-               correct=question.correct,
-               word0=question.correct,
-               word1=question.wrong1,
-               word2=question.wrong2,
-               word3=question.wrong3,
-               isLastQuestion=1 if child.num_word_test == NUMWORDTEST - 1 else 0)
+                               questionID=questionID,
+                               correct=question.correct,
+                               word0=question.correct,
+                               word1=question.wrong1,
+                               word2=question.wrong2,
+                               word3=question.wrong3,
+                               isLastQuestion=1 if child.num_word_test == NUMWORDTEST - 1 else 0)
 
 
 # 根据info信息计算预测的英语折合年龄，需保证childID已在数据库
@@ -356,10 +353,8 @@ def sel_result():
         # 更新question计数
         question.times_used = question.times_used + 1
 
-
         print 'wordtest: childID:{}, questionID:{}, level:{}, correct:{}, answer:{}, num_ans:{}'.format(
             childID, questionID, question.level, question.correct, answer, num_ans)
-
 
         # 结束标志
         if num_ans != NUMWORDTEST:
@@ -467,9 +462,9 @@ def raven_test():
             letter = 'B12'
 
         return render_template('raven_test.html',
-               ques_letter=letter,
-               questionID=questionID + 1,
-               isLastQuestion=1 if questionID == NUMRAVENTEST - 1 else 0)
+                               ques_letter=letter,
+                               questionID=questionID + 1,
+                               isLastQuestion=1 if questionID == NUMRAVENTEST - 1 else 0)
 
 
 # 瑞文测试结果
@@ -503,8 +498,8 @@ def raven_result():
             print 'wrong num_ans in raven result'
 
         correct_ratio = float(int(num_correct * 1000 / NUMRAVENTEST)) / 10.0
-
-        return render_template('raven_result.html', ratio=correct_ratio )
+        print correct_ratio
+        return render_template('raven_result.html', ratio=correct_ratio)
 
 
 # 记忆测试前的说明
@@ -546,7 +541,7 @@ def memory_test():
         is_correct = int(request.form.get('correct'))
         time = request.form.get('time')
         # 添加记录到数据库
-        addTestResult(MemoryTest, childID, questionID, is_correct, time)
+        addTestResult(MemoryTest, childID, length, is_correct, time)
 
         # 更新数据...
         # 说明：随机生成数字序列和判断正误都在前端进行
@@ -581,8 +576,6 @@ def memory_test():
             return render_template('memory_result.html', length=child.memory)
         else:
             return render_template('memory_test.html', length=child.memory)
-
-
 
 
 if __name__ == '__main__':
