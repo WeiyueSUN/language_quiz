@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>词汇测试</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/buttons/buttons.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/info.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="inner cover" style="padding-top: 15px;">
+                <h3 align="center">请选择与单词相匹配的图片。<br>点击喇叭图标进行朗读。</h3>
+
+                <div align="center">
+                    <h3 id="correct_word"></h3>
+                </div>
+                <div align="center">
+                    <button type="button" class="button button-3d button-pill" id="play_music">
+                        <span id="music_label" class="glyphicon glyphicon-play"></span>
+                    </button>
+                </div>
+                <br>
+                <audio id="music_src" hidden>您的设备不支持audio标签播放。</audio>
+                <br>
+                <div>
+                    <div style="width: 100%;">
+                        <div class="row">
+                            <div class="col-xs-6 option" style="text-align: center">
+                                <a href="javascript:void(0)" onclick="submit(0);">
+                                    <img class="img-rounded" height="110" width="110">
+                                </a>
+                            </div>
+                            <div class="col-xs-6 option" style="text-align: center">
+                                <a href="javascript:void(0)" onclick="submit(1);">
+                                    <img class="img-rounded" height="110" width="110">
+                                </a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-6 option" style="text-align: center">
+                                <a href="javascript:void(0)" onclick="submit(2);">
+                                    <img class="img-rounded" height="110" width="110">
+                                </a>
+                            </div>
+                            <div class="col-xs-6 option" style="text-align: center">
+                                <a href="javascript:void(0)" onclick="submit(3);">
+                                    <img class="img-rounded" height="110" width="110">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div style="color: rgba(255, 255, 255, .5);">
+                <div style="text-align: center;padding-bottom: 5px;">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<question hidden>{{questionID}}</question>
+<correct hidden>{{correct}}</correct>
+<word0 hidden>{{word0}}</word0>
+<word1 hidden>{{word1}}</word1>
+<word2 hidden>{{word2}}</word2>
+<word3 hidden>{{word3}}</word3>
+<last hidden>{{isLastQuestion}}</last>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    var word = new Array(4);
+    var child_id, ques_id, correct, is_last;
+    var timer = null;
+    var sec = 0, msec = 0;
+
+    $(document).ready(function () {
+        child_id = $('child').html();
+        ques_id = $('question').html();
+        correct = $('correct').html();
+        is_last = $('last').html();
+
+        word[0] = $('word0').html();
+        word[1] = $('word1').html();
+        word[2] = $('word2').html();
+        word[3] = $('word3').html();
+
+        var pos = Math.floor(Math.random() * 4);
+
+        var tmp = word[0];
+        word[0] = word[pos];
+        word[pos] = tmp;
+
+        $('#correct_word').html(correct);
+
+        var options = $('.option');
+        for (var i = 0; i < options.length; ++i) {
+            $(options[i]).find('img').attr('src', '/static/resource/img/' + word[i] + '.jpg')
+        }
+
+        var audio = document.getElementById('music_src');
+        audio.setAttribute('src', 'static/resource/voice/' + word[pos] + '.mp3');
+
+        clearInterval(timer);
+        timer = setInterval(function () {
+            msec++;
+            if(msec == 100) {
+                sec += 1;
+                msec = 0;
+            }
+        }, 1000 / 100);
+
+    });
+
+    $('#play_music').click(function () {
+        var audio = document.getElementById('music_src');
+        audio.play();
+    });
+
+    submit = function (sel) {
+
+        var form = document.createElement('form');
+        form.action = '/sel_test';
+        if(is_last == '1') {
+            form.action = '/sel_result';
+        }
+        form.target = '_self';
+        form.method = 'post';
+
+        var opt = document.createElement('input');
+        opt.name = 'childID';
+        opt.value = document.cookie;
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'questionID';
+        opt.value = $('question').html();
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'answer';
+        opt.value = word[sel];
+        form.appendChild(opt);
+
+        opt = document.createElement('input');
+        opt.name = 'time';
+        opt.value = sec + '.' + msec;
+        form.appendChild(opt);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</body>
+</html>

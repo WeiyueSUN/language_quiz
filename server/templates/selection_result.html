@@ -7,14 +7,11 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>初步信息确认</title>
+    <title>词汇测试结果</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="static/vendor/iCheck/skins/flat/red.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="static/css/info.css" rel="stylesheet">
@@ -35,13 +32,18 @@
 
             <div class="inner cover" style="padding-top: 50px; text-align: center">
                 <h4>您的孩子的测试成绩为</h4>
-                <h1><em><u>{{pred_age}}</u></em> / 30</h1>
+                <h1><em><u id="grade">{{pred_age}}</u></em> / 30</h1>
                 <br>
-                <h4>您家宝贝已经开始掌握</h4>
-                <h4>相当于美国 27 个月大孩子</h4>
-                <h4>的日常使用单词啦！</h4>
+                <h4 class="no_zero">您家宝贝已经开始掌握</h4>
+                <h4 class="no_zero">相当于美国 {{pred_age}} 个月大孩子</h4>
+                <h4 class="no_zero">的日常使用单词啦！</h4>
+                <h4 class="zero" hidden>看来宝贝刚刚接触英语，</h4>
+                <h4 class="zero" hidden>不妨从简单的日常用语开始学习吧！</h4>
+                <h4 class="zero" hidden>7岁前是儿童语言学习的黄金期，</h4>
+                <h4 class="zero" hidden>加油！</h4>
                 <br>
-                <h4>想了解更多？点击"了解更多"，<br>进一步了解您家孩子的英语学习情况与认知发展水平！</h4>
+                <h4>想了解更多？点击"了解更多"，</h4>
+                <h4>进一步了解您家孩子的英语学习情况与认知发展水平！</h4>
                 <br>
                 <div align="center">
                     <button type="button" onclick="javascript:begin();" class="btn btn-default btn-lg">了解更多</button>
@@ -50,7 +52,11 @@
 
             </div>
             <br>
-
+            <div style="color: rgba(255, 255, 255, .5);">
+                <div style="text-align: center;padding-bottom: 5px;">
+                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+                </div>
+            </div>
 
         </div>
 
@@ -62,21 +68,19 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="static/vendor/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_flat-red',
-            radioClass: 'iradio_flat-red',
-            increaseArea: '20%' // optional
-        });
+
+        if ($('#grade').html() == '0') {
+            $('.zero').attr('hidden', false);
+            $('.no_zero').attr('hidden', true);
+        }
 
     });
 
-    begin = function() {
+    begin = function () {
         var form = document.createElement('form');
-        form.action = '/parent';
+        form.action = '/info_parent';
         form.target = '_self';
         form.method = 'post';
 

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>瑞文测试结果</title>
+    <title>Part 2 词汇测试</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -24,39 +24,40 @@
 </head>
 
 <body>
+
 <div class="site-wrapper">
 
     <div class="site-wrapper-inner">
 
         <div class="cover-container">
 
-            <div class="inner cover" style="padding-top: 15px; text-align: center">
-                <h4>您的孩子的瑞文测试正确率为：</h4>
-                <h1>{{ratio}}%</h1>
+            <div class="inner cover">
+                <h3 align="center">Part 2 词汇测试</h3>
                 <br>
-                <h4 align="left">参考数据：</h4>
-                <h4 align="left">在完整的瑞文推理量表中，<br>各年龄段儿童测试成绩的<b>中位数</b>为：</h4>
-                <h4 align="left">5.5周岁：27%</h4>
-                <h4 align="left">6周岁：28%</h4>
-                <h4 align="left">6.5周岁：30%</h4>
-                <h4 align="left">7周岁：32%</h4>
+                <h4 align="center">以下20道题请孩子作答。</h4>
                 <br>
-                <h4>点击"继续"，<br>进一步进行认知能力测试。</h4>
+                <p align="left">每道题中，屏幕中央位置会出现一个单词，下方有4张图片。点击喇叭图标可以听到该单词的读音。请点击与单词对应的图片。</p>
                 <br>
-                <div align="center">
-                    <button type="button" onclick="javascript:begin();" class="btn btn-default btn-lg">继续</button>
-                </div>
+                <p align="left">年纪较小的孩子家长可以帮忙输入选择。在作答过程中，请家长让孩子自己做出选择。</p>
                 <br>
+                <p class="lead">
+                    <a href="javascript:begin();" class="btn btn-lg btn-default">开始测试</a>
+                </p>
 
             </div>
-            <div style="color: rgba(255, 255, 255, .5);">
-                <div style="text-align: center;padding-bottom: 5px;">
-                    <p>Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
+
+            <div class="mastfoot">
+                <div>
+                    <p style="text-align: center;">Powered by <a href="http://cs.tsinghua.edu.cn">清华大学计算机系</a></p>
                 </div>
             </div>
+
         </div>
+
     </div>
+
 </div>
+<child_id hidden>{{childID}}</child_id>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -65,12 +66,12 @@
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-
+       document.cookie = $('child_id').html();
     });
 
-    begin = function () {
+    begin = function() {
         var form = document.createElement('form');
-        form.action = '/memory_before';
+        form.action = '/sel_practice';
         form.target = '_self';
         form.method = 'post';
 

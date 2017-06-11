@@ -7,15 +7,13 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>初步信息确认</title>
+    <title>工作记忆测试</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="static/vendor/iCheck/skins/flat/red.css" rel="stylesheet">
     <link href="static/vendor/buttons/buttons.css" rel="stylesheet">
+    <link href="static/vendor/layer/mobile/need/layer.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="static/css/info.css" rel="stylesheet">
@@ -35,7 +33,8 @@
         <div class="cover-container">
 
             <div class="inner cover" style="padding-top: 30px;">
-                <h3 align="center">点击喇叭，<br>播放一串随机数字序列，<br>请您的孩子认真记忆此序列。</h3>
+                <h4 align="center">点击喇叭，<br>播放一串随机数字序列，<br>请您的孩子认真记忆此序列。</h4>
+                <h4 align="center"><b><u>只能播放一次！</u></b></h4>
                 <div align="center">
                     <h3 id="correct_word"></h3>
                 </div>
@@ -47,7 +46,6 @@
                 </div>
                 <br>
                 <audio id="music_src" hidden>您的设备不支持audio标签播放。</audio>
-                <br>
                 <div>
                     <div style="width: 100%;">
                         <div align="center">
@@ -78,22 +76,33 @@
 
     </div>
 </div>
-<length hidden>{{questionID}}</length>
+<length hidden>{{length}}</length>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="static/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="static/vendor/iCheck/icheck.min.js"></script>
+<script src="static/vendor/layer/layer.js"></script>
+
 <script>
     var timer = null;
     var sec = 0, msec = 0;
+
+    var now_pos = 0;
+    var sequence = "";
+
     $(document).ready(function () {
 
+        var len = parseInt($('length').html());
+        for (var i = 0; i < len; ++i) {
+            var ran_int = Math.floor(Math.random() * 10);
+            sequence += String(ran_int);
+        }
 
         var audio = document.getElementById('music_src');
+        $(audio).attr('src', 'static/resource/audio_num/' + sequence[0] + '.mp3');
+        now_pos++;
 
         audio.addEventListener("loadeddata",
             function () {
@@ -101,7 +110,24 @@
                 $('#music_label').html('');
             }, false
         );
-        audio.setAttribute('src', 'static/resource/num_seq/' + $('length').html() +'.mp3');
+
+        audio.addEventListener("ended",
+            function () {
+                if (now_pos < sequence.length) {
+                    $(audio).attr('src', 'static/resource/audio_num/' + sequence[now_pos] + '.mp3');
+                    audio.play();
+                    now_pos++;
+                } else if (now_pos == sequence.length) {
+                    now_pos = 1;
+                }
+            }, false
+        );
+
+        $('#play_music').click(function () {
+            var audio = document.getElementById('music_src');
+            audio.play();
+            $('#play_music').attr('disabled', true);
+        });
 
         clearInterval(timer);
         timer = setInterval(function () {
@@ -121,44 +147,40 @@
     begin = function () {
 
         var answer = $('#recite').val();
-//        var len = parseInt($('length').html());
-//        if(len % 2 == 0) {
-//            len = len / 2;
-//        } else {
-//            len = (len + 1) / 2;
-//        }
-        if(answer.length == 0) {
-            alert('请填写答案！');
+
+        if (answer.length == 0) {
+            layer.msg('请填写答案！');
             return;
+        } else {
+            var form = document.createElement('form');
+            form.action = '/memory_test';
+            form.target = '_self';
+            form.method = 'post';
+
+            var opt = document.createElement('input');
+            opt.name = 'childID';
+            opt.value = document.cookie;
+            form.appendChild(opt);
+
+            opt = document.createElement('input');
+            opt.name = 'time';
+            opt.value = sec + '.' + msec;
+            form.appendChild(opt);
+
+            opt = document.createElement('input');
+            opt.name = 'length';
+            opt.value = parseInt($('length').html());
+            form.appendChild(opt);
+
+            opt = document.createElement('input');
+            opt.name = 'correct';
+            opt.value = 1;
+            if (answer != sequence) opt.value = 0;
+            form.appendChild(opt);
+
+            document.body.appendChild(form);
+            form.submit();
         }
-
-        var form = document.createElement('form');
-        form.action = '/memorytest';
-        form.target = '_self';
-        form.method = 'post';
-
-        var opt = document.createElement('input');
-        opt.name = 'childID';
-        opt.value = document.cookie;
-        form.appendChild(opt);
-
-        opt = document.createElement('input');
-        opt.name = 'answer';
-        opt.value = $('#recite').val();
-        form.appendChild(opt);
-
-        opt = document.createElement('input');
-        opt.name = 'length';
-        opt.value = $('length').html();
-        form.appendChild(opt);
-
-        opt = document.createElement('input');
-        opt.name = 'time';
-        opt.value = sec + '.' + msec;
-        form.appendChild(opt);
-
-        document.body.appendChild(form);
-        form.submit();
     }
 </script>
 </body>

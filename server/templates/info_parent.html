@@ -33,7 +33,7 @@
 
         <div class="cover-container">
 
-            <div class="inner cover" style="padding-top: 30px;">
+            <div class="inner cover" style="padding-top: 15px;">
                 <h3 align="center">以下几道题请家长填写，<br>大约花费5~10分钟。</h3>
                 <form class="form-horizontal" id="information" method="post" action="/begin">
                     <div class="form-group" style="padding: 5px;">
@@ -315,7 +315,7 @@
     begin = function () {
 
         var form = document.createElement('form');
-        form.action = '/survey';
+        form.action = '/info_parent_submit';
         form.target = '_self';
         form.method = 'post';
 
