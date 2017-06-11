@@ -69,7 +69,6 @@ def genCSV():
         datai['A7'] = child.A7
         datai['time_survey'] = child.time_survey
         datai['memory'] = child.memory
-        datai['date_end'] = child.date_end
 
         word_records = session.query(WordTest).filter_by(childID=childID).all()
         for i, word_record in zip(range(1, 21), word_records):
@@ -97,7 +96,7 @@ def genCSV():
         datai = pd.DataFrame(datai, index=[childID])
         data = pd.concat([data, datai])
     #print data.columns
-    columns = ['childID', 'ip', 'date_start', 'date_end', 'sex', 'age',
+    columns = ['childID', 'ip', 'date_start', 'sex', 'age',
     'edu1', 'edu2', 'edu3', 'edu4', 'edu5', 'edu6', 'edu7', 'time_info',
     'level', 'num_word_test']
 
@@ -111,7 +110,7 @@ def genCSV():
     for i in range(1, 9):
         columns = columns + ['raven_ans'+str(i), 'raven_time'+str(i), 'raven_date'+str(i)]
 
-    for i in range(1, 30):
+    for i in range(1, 35):
         columns = columns + ['memory_ans'+str(i), 'memory_time'+str(i), 'memory_date'+str(i)]
 
     data.to_csv("languageData.csv", columns=columns)

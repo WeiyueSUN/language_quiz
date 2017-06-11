@@ -21,9 +21,8 @@ MINLEVEL = 1
 MAXLEVEL = 6
 # 固定词在每个级别的词数量
 FIX_NUM = 4
-
 RAVEN_ANS = [-1, 4, 6, 3, 6, 4, 5, 1, 5]
-
+RAVEN_LETTER = ['', 'A1', 'A5', 'A6', 'A7', 'A11', 'A12', 'B5', 'B12']
 MINMEMORY = 3
 MAXMEMORY = 16
 
@@ -144,8 +143,14 @@ def newWordTestQuestionID(childID):
 
     # 先调出不考虑是否作答的所有题目
     if num_answered_this_level < FIX_NUM:
-        # 同集题中固定题，且类型与上一道相反
-        questions = session.query(Question).filter_by(level=child.level, fix=1, group=1 - child.lgroup)
+        # 同级别题中固定题
+
+        if num_answered_this_level == 1:
+            # 刚回答过一个时，下一个要给出group不同的
+            questions = session.query(Question).filter_by(level=child.level, fix=1, group=1 - child.lgroup)
+        else:
+            # 除此之外无需考虑group的问题
+            questions = session.query(Question).filter_by(level=child.level, fix=1)
     else:
         # 所有同级别题
         questions = session.query(Question).filter_by(level=child.level)
@@ -196,7 +201,7 @@ def kid_info_submit():
         session.add(newchild)
         session.commit()
         # 数据入库
-        print "create a new child, id = ", newchild.id
+        print "create a new child, id = ", newchild.id, newchild.age
 
         return render_template('selection_before.html',
                                childID=newchild.id)
@@ -237,14 +242,24 @@ def sel_begin():
 
 # 添加任一种类型的一道题目的答案到数据库
 def addTestResult(testClass, childID, questionID, answer, time_this):
-    record = testClass()
-    record.childID = childID
-    record.questionID = questionID
-    record.answer = answer
-    record.time = time_this
-    record.date = str(time.time())
-    session.add(record)
-    session.commit()
+    records = session.query(testClass).filter_by(childID=childID, questionID=questionID)
+    n = 0
+    for record in records:
+        n = n + 1
+    if n == 0:
+        record = testClass()
+        record.childID = childID
+        record.questionID = questionID
+        record.answer = answer
+        record.time = time_this
+        record.date = str(time.time())
+        session.add(record)
+        session.commit()
+        print 'new record'
+        return 1
+    else:
+        print 'record existed'
+        return 0
 
 
 # 提交单词测试的一个题目
@@ -261,29 +276,30 @@ def sel_test():
         child = session.query(Child).filter_by(id=childID).one()
         question = session.query(Question).filter_by(id=questionID).one()
         # 添加答题记录
-        addTestResult(WordTest, childID, questionID, answer, time)
 
-        # 更新该child已回答的数量， 近两次回答是否正确
-        # last是上次，llast是上上次，1是正确，-1是错误
-        child.num_word_test = child.num_word_test + 1
-        child.llast = child.last
-        child.last = 1 if answer == question.correct else -1
-        child.lgroup = question.group
+        if addTestResult(WordTest, childID, questionID, answer, time) == 1:
+        # 如果合法
+            # 更新该child已回答的数量， 近两次回答是否正确
+            # last是上次，llast是上上次，1是正确，-1是错误
+            child.num_word_test = child.num_word_test + 1
+            child.llast = child.last
+            child.last = 1 if answer == question.correct else -1
+            child.lgroup = question.group
 
-        # 更新question计数， 更新child的答题缓存
-        question.times_used = question.times_used + 1
+            # 更新question计数， 更新child的答题缓存
+            question.times_used = question.times_used + 1
 
-        print 'wordtest: childID:{}, questionID:{}, level:{}, correct:{}, answer:{}, time:{}, num_ans:{}'.format(
-            childID,
-            questionID,
-            question.level,
-            question.correct,
-            answer,
-            time,
-            child.num_word_test)
-        session.add(child)
-        session.add(question)
-        session.commit()
+            print 'wordtest: childID:{}, questionID:{}, level:{}, correct:{}, answer:{}, time:{}, num_ans:{}'.format(
+                childID,
+                questionID,
+                question.level,
+                question.correct,
+                answer,
+                time,
+                child.num_word_test)
+            session.add(child)
+            session.add(question)
+            session.commit()
 
         ### 至此已完成提交的题目的维护，开始分配下一道题 ###
 
@@ -300,7 +316,7 @@ def sel_test():
                                word1=question.wrong1,
                                word2=question.wrong2,
                                word3=question.wrong3,
-                               isLastQuestion=1 if child.num_word_test == NUMWORDTEST - 1 else 0)
+                               isLastQuestion=1 if child.num_word_test >= NUMWORDTEST - 1 else 0)
 
 
 # 根据info信息计算预测的英语折合年龄，需保证childID已在数据库
@@ -344,28 +360,28 @@ def sel_result():
         question = session.query(Question).filter_by(id=questionID).one()
 
         # 记录
-        addTestResult(WordTest, childID, questionID, answer, time)
+        if addTestResult(WordTest, childID, questionID, answer, time) == 1:
+            # 如果合法
+            # 更新child答题数量
+            child.num_word_test = child.num_word_test + 1
+            num_ans = child.num_word_test
 
-        # 更新child答题数量
-        child.num_word_test = child.num_word_test + 1
-        num_ans = child.num_word_test
+            # 更新question计数
+            question.times_used = question.times_used + 1
 
-        # 更新question计数
-        question.times_used = question.times_used + 1
+            print 'wordtest: childID:{}, questionID:{}, level:{}, correct:{}, answer:{}, num_ans:{}'.format(
+                childID, questionID, question.level, question.correct, answer, num_ans)
 
-        print 'wordtest: childID:{}, questionID:{}, level:{}, correct:{}, answer:{}, num_ans:{}'.format(
-            childID, questionID, question.level, question.correct, answer, num_ans)
+            # 结束标志
+            if num_ans != NUMWORDTEST:
+                print 'wrong num total word test'
 
-        # 结束标志
-        if num_ans != NUMWORDTEST:
-            print 'wrong num total word test'
+            # 预测
+            child.pred_age = predAgeWordTest(childID)
 
-        # 预测
-        child.pred_age = predAgeWordTest(childID)
-
-        session.add(child)
-        session.add(question)
-        session.commit()
+            session.add(child)
+            session.add(question)
+            session.commit()
 
         return render_template('selection_result.html', pred_age=child.pred_age)
 
@@ -404,6 +420,7 @@ def info_parent_submit():
         child.A7 = request.form.get('A7')
         child.time_survey = request.form.get('time')
 
+        print child.A11
         session.add(child)
         session.commit()
 
@@ -441,30 +458,15 @@ def raven_test():
         questionID = int(request.form.get('questionID'))
         answer = request.form.get('answer')
         time = request.form.get('time')
+        child = session.query(Child).filter_by(id=childID).one()
 
-        addTestResult(RavenTest, childID, questionID, answer, time)
-
-        letter = ''
-        next_ques = questionID + 1
-        if next_ques == 2:
-            letter = 'A5'
-        elif next_ques == 3:
-            letter = 'A6'
-        elif next_ques == 4:
-            letter = 'A7'
-        elif next_ques == 5:
-            letter = 'A11'
-        elif next_ques == 6:
-            letter = 'A12'
-        elif next_ques == 7:
-            letter = 'B5'
-        elif next_ques == 8:
-            letter = 'B12'
+        if addTestResult(RavenTest, childID, questionID, answer, time) == 1:
+            child.num_ans_raven = child.num_ans_raven + 1
 
         return render_template('raven_test.html',
-                               ques_letter=letter,
-                               questionID=questionID + 1,
-                               isLastQuestion=1 if questionID == NUMRAVENTEST - 1 else 0)
+                               ques_letter=RAVEN_LETTER[child.num_ans_raven + 1],
+                               questionID=child.num_ans_raven + 1,
+                               isLastQuestion=1 if child.num_ans_raven >= NUMRAVENTEST - 1 else 0)
 
 
 # 瑞文测试结果
@@ -477,10 +479,11 @@ def raven_result():
         # 获取记录
         childID = int(request.form.get('childID'))
         questionID = int(request.form.get('questionID'))
-        answer = int(request.form.get('answer'))
+        answer = request.form.get('answer')
         time = request.form.get('time')
         # 添加记录到数据库
-        addTestResult(RavenTest, childID, questionID, answer, time)
+        if addTestResult(RavenTest, childID, questionID, answer, time) == 1:
+            pass
 
         if NUMRAVENTEST != questionID:
             print "wrong num of raven questions!"
@@ -490,13 +493,15 @@ def raven_result():
         num_correct = 0
         num_ans = 0
         for record in records:
-            if record.answer == RAVEN_ANS[record.questionID]:
+            print record.answer
+            if int(record.answer) == RAVEN_ANS[record.questionID]:
                 num_correct = num_correct + 1
             num_ans = num_ans + 1
 
         if num_ans != NUMRAVENTEST:
             print 'wrong num_ans in raven result'
 
+        print num_correct
         correct_ratio = float(int(num_correct * 1000 / NUMRAVENTEST)) / 10.0
 
         return render_template('raven_result.html', ratio=correct_ratio)
@@ -540,8 +545,25 @@ def memory_test():
         length = int(request.form.get('length'))
         is_correct = int(request.form.get('correct'))
         time = request.form.get('time')
-        # 添加记录到数据库
-        addTestResult(MemoryTest, childID, length, is_correct, time)
+
+        child = session.query(Child).filter_by(id=childID).one()
+
+        records = session.query(MemoryTest).filter_by(childID=childID, questionID=length * 2)
+        n = 0
+        for record in records:
+            n = n + 1
+
+        if n == 0 and child.memory == length:
+            addTestResult(MemoryTest, childID, length * 2, is_correct, time)
+        else:
+            records = session.query(MemoryTest).filter_by(childID=childID, questionID=length * 2 + 1)
+            n = 0
+            for record in records:
+                n = n + 1
+            if n == 0 and child.memory == length:
+                addTestResult(MemoryTest, childID, length * 2 + 1, is_correct, time)
+            else:
+                return render_template('memory_test.html', length=child.memory)
 
         # 更新数据...
         # 说明：随机生成数字序列和判断正误都在前端进行
@@ -550,7 +572,6 @@ def memory_test():
         # 根据这些数据后端在数据库做相应记录，并且更新数据，决定返回什么样的结果回来
 
 
-        child = session.query(Child).filter_by(id=childID).one()
 
         is_finish = 0
         if is_correct == 1:
@@ -573,6 +594,7 @@ def memory_test():
         session.add(child)
         session.commit()
         if is_finish == 1:
+            child = session.query(Child).filter_by(id=childID).one()
             return render_template('memory_result.html', length=child.memory)
         else:
             return render_template('memory_test.html', length=child.memory)

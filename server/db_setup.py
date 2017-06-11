@@ -91,11 +91,10 @@ class Child(Base):
     A6 = Column(String(10))
     A7 = Column(String(10))
     time_survey = Column(String(10))
-
+    num_ans_raven = Column(Integer)
     memory = Column(Integer)
     chance = Column(Integer)
 
-    date_end =Column(String(10))
     def __init__(self):
         self.num_ans = 0
         self.level = 1
@@ -104,6 +103,8 @@ class Child(Base):
         self.num_word_test = 0
         self.lgroup = 0
         self.chance = 1
+        self.num_ans_raven = 0
+        self.memory = 3
 
     @property
     def serialize(self):
