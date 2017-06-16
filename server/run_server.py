@@ -121,7 +121,10 @@ def newWordTestQuestionID(childID):
         child.llast = 0
 
     session.add(child)
-    session.commit()
+    try:
+        session.commit()
+    except:
+        session.rollback()
     ### 此后只访问，不更新数据库 ###
 
     # 数据库查该孩子的答题记录
@@ -199,7 +202,10 @@ def kid_info_submit():
             return render_template('index.html')
 
         session.add(newchild)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
         # 数据入库
         print "create a new child, id = ", newchild.id, newchild.age
 
@@ -255,7 +261,10 @@ def addTestResult(testClass, childID, questionID, answer, time_this):
         record.time = time_this
         record.date = str(time.time())
         session.add(record)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
         print 'new record'
         return 1
     else:
@@ -302,7 +311,10 @@ def sel_test():
                 child.num_word_test)
             session.add(child)
             session.add(question)
-            session.commit()
+            try:
+                session.commit()
+            except:
+                session.rollback()
 
         ### 至此已完成提交的题目的维护，开始分配下一道题 ###
 
@@ -386,7 +398,10 @@ def sel_result():
 
             session.add(child)
             session.add(question)
-            session.commit()
+            try:
+                session.commit()
+            except:
+                session.rollback()
 
         return render_template('selection_result.html', pred_age=child.pred_age)
 
@@ -429,7 +444,10 @@ def info_parent_submit():
         if (child.A11 == None):
             return render_template('index.html')
         session.add(child)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
 
         return render_template('raven_before.html')
 
@@ -609,7 +627,10 @@ def memory_test():
                 is_finish = 1
 
         session.add(child)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
         if is_finish == 1:
             child = session.query(Child).filter_by(id=childID).one()
             return render_template('memory_result.html', length=child.memory)
