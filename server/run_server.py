@@ -227,9 +227,9 @@ def sel_practice():
 @app.route('/sel_begin', methods=['POST', 'GET'])
 def sel_begin():
     if request.method == 'GET':
-        childID = int(request.args.get('childID'))
-        if (childID == None):
+        if (request.args.get('childID') == None):
             return render_template('index.html')
+        childID = int(request.args.get('childID'))
         print 'childID: ', childID
         # 挑选问题
         questionID, num_ans = newWordTestQuestionID(childID)
@@ -277,13 +277,13 @@ def addTestResult(testClass, childID, questionID, answer, time_this):
 def sel_test():
     if request.method == 'GET':
         # 获取答题信息
+
+        if (request.args.get('childID') == None or request.args.get('questionID') == None):
+            return render_template('index.html')
         childID = int(request.args.get('childID'))
         questionID = int(request.args.get('questionID'))
         answer = request.args.get('answer')
         time = request.args.get('time')
-
-        if (childID == None or questionID == None):
-            return render_template('index.html')
 
         child = session.query(Child).filter_by(id=childID).one()
         question = session.query(Question).filter_by(id=questionID).one()
@@ -365,13 +365,14 @@ def sel_result():
     if request.method == 'GET':
         print "word test over"
         # 获取信息
+
+        if (request.args.get('childID') == None or request.args.get('questionID') == None):
+            return render_template('index.html')
+
         childID = int(request.args.get('childID'))
         questionID = int(request.args.get('questionID'))
         answer = request.args.get('answer')
         time = request.args.get('time')
-
-        if (childID == None or questionID == None):
-            return render_template('index.html')
 
         child = session.query(Child).filter_by(id=childID).one()
         question = session.query(Question).filter_by(id=questionID).one()
@@ -420,9 +421,9 @@ def info_parent():
 @app.route('/info_parent_submit', methods=['POST', 'GET'])
 def info_parent_submit():
     if request.method == 'GET':
-        childID = int(request.args.get('childID'))
-        if (childID == None):
+        if (request.args.get('childID') == None):
             return render_template('index.html')
+        childID = int(request.args.get('childID'))
 
         child = session.query(Child).filter_by(id=childID).one()
 
@@ -479,13 +480,12 @@ def raven_begin():
 @app.route('/raven_test', methods=['POST', 'GET'])
 def raven_test():
     if request.method == 'GET':
+        if (request.args.get('childID') == None or request.args.get('questionID') == None):
+            return render_template('index.html')
         childID = int(request.args.get('childID'))
         questionID = int(request.args.get('questionID'))
         answer = request.args.get('answer')
         time = request.args.get('time')
-
-        if (childID == None or questionID == None):
-            return render_template('index.html')
 
         child = session.query(Child).filter_by(id=childID).one()
 
@@ -504,13 +504,12 @@ def raven_result():
     if request.method == 'GET':
         print "raven test over"
         # 获取记录
+        if (request.args.get('childID') == None or request.args.get('questionID') == None):
+            return render_template('index.html')
         childID = int(request.args.get('childID'))
         questionID = int(request.args.get('questionID'))
         answer = request.args.get('answer')
         time = request.args.get('time')
-
-        if (childID == None or questionID == None):
-            return render_template('index.html')
 
         # 添加记录到数据库
         if addTestResult(RavenTest, childID, questionID, answer, time) == 1:
@@ -573,13 +572,13 @@ def memory_begin():
 def memory_test():
     if request.method == 'GET':
         # 获取记录
+
+        if (request.args.get('childID') == None or request.args.get('length') == None):
+            return render_template('index.html')
         childID = int(request.args.get('childID'))
         length = int(request.args.get('length'))
         is_correct = int(request.args.get('correct'))
         time = request.args.get('time')
-
-        if (childID == None or length == None):
-            return render_template('index.html')
 
         child = session.query(Child).filter_by(id=childID).one()
 
