@@ -66,13 +66,17 @@
 <script>
     $(document).ready(function () {
 
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
+
     });
 
     begin = function () {
         var form = document.createElement('form');
         form.action = '/raven_practice';
         form.target = '_self';
-        form.method = 'post'
+        form.method = 'get'
 
         var opt = document.createElement('input');
         opt.name = 'childID';

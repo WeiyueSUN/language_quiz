@@ -72,6 +72,10 @@
 <script>
     $(document).ready(function () {
 
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
+
         if ($('#grade').html() == '0') {
             $('.zero').attr('hidden', false);
             $('.no_zero').attr('hidden', true);
@@ -83,7 +87,12 @@
         var form = document.createElement('form');
         form.action = '/info_parent';
         form.target = '_self';
-        form.method = 'post';
+        form.method = 'get';
+
+        var opt = document.createElement('input');
+        opt.name = 'childID';
+        opt.value = $.cookie('childID');
+        form.appendChild(opt);
 
         document.body.appendChild(form);
         form.submit();

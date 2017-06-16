@@ -267,6 +267,11 @@
     var timer = null;
     var sec = 0, msec = 0;
     $(document).ready(function () {
+
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
+
         $('input').iCheck({
             checkboxClass: 'icheckbox_flat-red',
             radioClass: 'iradio_flat-red',
@@ -318,7 +323,7 @@
         var form = document.createElement('form');
         form.action = '/info_parent_submit';
         form.target = '_self';
-        form.method = 'post';
+        form.method = 'get';
 
         var opt = document.createElement('input');
         opt.name = 'A11';

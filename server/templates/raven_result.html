@@ -63,8 +63,13 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="static/vendor/jquery/jquery-1.11.3.min.js"></script>
 <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/vendor/cookie/jquery.cookie.js"></script>
 <script>
     $(document).ready(function () {
+
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
 
     });
 
@@ -72,7 +77,12 @@
         var form = document.createElement('form');
         form.action = '/memory_before';
         form.target = '_self';
-        form.method = 'post';
+        form.method = 'get';
+
+        var opt = document.createElement('input');
+        opt.name = 'childID';
+        opt.value = $.cookie('childID');
+        form.appendChild(opt);
 
         document.body.appendChild(form);
         form.submit();

@@ -104,6 +104,10 @@
 
     $(document).ready(function () {
 
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
+
         var audio = document.getElementById('music_src');
         audio.addEventListener("loadeddata",
             function () {
@@ -126,7 +130,7 @@
                 var form = document.createElement('form');
                 form.action = '/sel_begin';
                 form.target = '_self';
-                form.method = 'post';
+                form.method = 'get';
 
                 var opt = document.createElement('input');
                 opt.name = 'childID';

@@ -91,6 +91,10 @@
     var sequence = "";
     $(document).ready(function () {
 
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
+
         var len = 2;
         for (var i = 0; i < len; ++i) {
             var ran_int = Math.floor(Math.random() * 10);
@@ -136,7 +140,7 @@
                 var form = document.createElement('form');
                 form.action = '/memory_begin';
                 form.target = '_self';
-                form.method = 'post';
+                form.method = 'get';
 
                 var opt = document.createElement('input');
                 opt.name = 'childID';

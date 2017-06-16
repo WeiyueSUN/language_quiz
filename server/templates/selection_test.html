@@ -109,6 +109,11 @@
     var sec = 0, msec = 0;
 
     $(document).ready(function () {
+
+        if(typeof($.cookie('childID')) == 'undefined') {
+            window.location.href = '/';
+        }
+
         child_id = $('child').html();
         ques_id = $('question').html();
         correct = $('correct').html();
@@ -159,7 +164,7 @@
             form.action = '/sel_result';
         }
         form.target = '_self';
-        form.method = 'post';
+        form.method = 'get';
 
         var opt = document.createElement('input');
         opt.name = 'childID';

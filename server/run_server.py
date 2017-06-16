@@ -181,22 +181,22 @@ def newWordTestQuestionID(childID):
 @app.route('/info_kid_submit', methods=['POST', 'GET'])
 def kid_info_submit():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
         newchild = Child()
         newchild.date_start = str(time.time())
         newchild.ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-        newchild.sex = request.form.get('sex')
-        newchild.age = request.form.get('age')
-        newchild.edu1 = request.form.get('edu1')
-        newchild.edu2 = request.form.get('edu2')
-        newchild.edu3 = request.form.get('edu3')
-        newchild.edu4 = request.form.get('edu4')
-        newchild.edu5 = request.form.get('edu5')
-        newchild.edu6 = request.form.get('edu6')
-        newchild.edu7 = request.form.get('edu7')
-        newchild.time_info = request.form.get('time')
+        newchild.sex = request.args.get('sex')
+        newchild.age = request.args.get('age')
+        newchild.edu1 = request.args.get('edu1')
+        newchild.edu2 = request.args.get('edu2')
+        newchild.edu3 = request.args.get('edu3')
+        newchild.edu4 = request.args.get('edu4')
+        newchild.edu5 = request.args.get('edu5')
+        newchild.edu6 = request.args.get('edu6')
+        newchild.edu7 = request.args.get('edu7')
+        newchild.time_info = request.args.get('time')
         # 记录孩子信息
+        if (newchild.sex == None or newchild.age == None):
+            return render_template('index.html')
 
         session.add(newchild)
         session.commit()
@@ -211,8 +211,9 @@ def kid_info_submit():
 @app.route('/sel_practice', methods=['POST', 'GET'])
 def sel_practice():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('selection_practice.html')
 
 
@@ -220,9 +221,9 @@ def sel_practice():
 @app.route('/sel_begin', methods=['POST', 'GET'])
 def sel_begin():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
-        childID = int(request.form.get('childID'))
+        childID = int(request.args.get('childID'))
+        if (childID == None):
+            return render_template('index.html')
         print 'childID: ', childID
         # 挑选问题
         questionID, num_ans = newWordTestQuestionID(childID)
@@ -266,19 +267,21 @@ def addTestResult(testClass, childID, questionID, answer, time_this):
 @app.route('/sel_test', methods=['POST', 'GET'])
 def sel_test():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
         # 获取答题信息
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        time = request.form.get('time')
+        childID = int(request.args.get('childID'))
+        questionID = int(request.args.get('questionID'))
+        answer = request.args.get('answer')
+        time = request.args.get('time')
+
+        if (childID == None or questionID == None):
+            return render_template('index.html')
+
         child = session.query(Child).filter_by(id=childID).one()
         question = session.query(Question).filter_by(id=questionID).one()
         # 添加答题记录
 
         if addTestResult(WordTest, childID, questionID, answer, time) == 1:
-        # 如果合法
+            # 如果合法
             # 更新该child已回答的数量， 近两次回答是否正确
             # last是上次，llast是上上次，1是正确，-1是错误
             child.num_word_test = child.num_word_test + 1
@@ -348,14 +351,16 @@ def predAgeWordTest(childID):
 @app.route('/sel_result', methods=['POST', 'GET'])
 def sel_result():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
         print "word test over"
         # 获取信息
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        time = request.form.get('time')
+        childID = int(request.args.get('childID'))
+        questionID = int(request.args.get('questionID'))
+        answer = request.args.get('answer')
+        time = request.args.get('time')
+
+        if (childID == None or questionID == None):
+            return render_template('index.html')
+
         child = session.query(Child).filter_by(id=childID).one()
         question = session.query(Question).filter_by(id=questionID).one()
 
@@ -389,38 +394,40 @@ def sel_result():
 # 返回家长填写信息页
 @app.route('/info_parent', methods=['POST', 'GET'])
 def info_parent():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('info_parent.html')
-    elif request.method == 'GET':
-        return render_template('index.html')
 
 
 # 处理家长填写信息，并返回瑞文推理引导语页
 @app.route('/info_parent_submit', methods=['POST', 'GET'])
 def info_parent_submit():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
-        childID = int(request.form.get('childID'))
+        childID = int(request.args.get('childID'))
+        if (childID == None):
+            return render_template('index.html')
 
         child = session.query(Child).filter_by(id=childID).one()
 
-        child.A11 = request.form.get('A11')
-        child.A12 = request.form.get('A12')
-        child.A13 = request.form.get('A13')
-        child.A21 = request.form.get('A21')
-        child.A22 = request.form.get('A22')
-        child.A23 = request.form.get('A23')
-        child.A31 = request.form.get('A31')
-        child.A32 = request.form.get('A32')
-        child.A33 = request.form.get('A33')
-        child.A4 = request.form.get('A4')
-        child.A5 = request.form.get('A5')
-        child.A6 = request.form.get('A6')
-        child.A7 = request.form.get('A7')
-        child.time_survey = request.form.get('time')
+        child.A11 = request.args.get('A11')
+        child.A12 = request.args.get('A12')
+        child.A13 = request.args.get('A13')
+        child.A21 = request.args.get('A21')
+        child.A22 = request.args.get('A22')
+        child.A23 = request.args.get('A23')
+        child.A31 = request.args.get('A31')
+        child.A32 = request.args.get('A32')
+        child.A33 = request.args.get('A33')
+        child.A4 = request.args.get('A4')
+        child.A5 = request.args.get('A5')
+        child.A6 = request.args.get('A6')
+        child.A7 = request.args.get('A7')
+        child.time_survey = request.args.get('time')
 
-        print child.A11
+        if (child.A11 == None):
+            return render_template('index.html')
         session.add(child)
         session.commit()
 
@@ -431,8 +438,9 @@ def info_parent_submit():
 @app.route('/raven_practice', methods=['POST', 'GET'])
 def raven_practice():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('raven_practice.html')
 
 
@@ -440,8 +448,9 @@ def raven_practice():
 @app.route('/raven_begin', methods=['POST', 'GET'])
 def raven_begin():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('raven_test.html',
                                ques_letter='A1',
                                questionID=1,
@@ -452,12 +461,14 @@ def raven_begin():
 @app.route('/raven_test', methods=['POST', 'GET'])
 def raven_test():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        time = request.form.get('time')
+        childID = int(request.args.get('childID'))
+        questionID = int(request.args.get('questionID'))
+        answer = request.args.get('answer')
+        time = request.args.get('time')
+
+        if (childID == None or questionID == None):
+            return render_template('index.html')
+
         child = session.query(Child).filter_by(id=childID).one()
 
         if addTestResult(RavenTest, childID, questionID, answer, time) == 1:
@@ -473,14 +484,16 @@ def raven_test():
 @app.route('/raven_result', methods=['POST', 'GET'])
 def raven_result():
     if request.method == 'GET':
-        return render_template('index.html')
-    if request.method == 'POST':
         print "raven test over"
         # 获取记录
-        childID = int(request.form.get('childID'))
-        questionID = int(request.form.get('questionID'))
-        answer = request.form.get('answer')
-        time = request.form.get('time')
+        childID = int(request.args.get('childID'))
+        questionID = int(request.args.get('questionID'))
+        answer = request.args.get('answer')
+        time = request.args.get('time')
+
+        if (childID == None or questionID == None):
+            return render_template('index.html')
+
         # 添加记录到数据库
         if addTestResult(RavenTest, childID, questionID, answer, time) == 1:
             pass
@@ -511,8 +524,9 @@ def raven_result():
 @app.route('/memory_before', methods=['GET', 'POST'])
 def memory_before():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('memory_before.html')
 
 
@@ -520,8 +534,9 @@ def memory_before():
 @app.route('/memory_practice', methods=['GET', 'POST'])
 def memory_practice():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('memory_practice.html')
 
 
@@ -529,8 +544,9 @@ def memory_practice():
 @app.route('/memory_begin', methods=['GET', 'POST'])
 def memory_begin():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
+        childID = request.args.get('childID')
+        if (childID == None):
+            return render_template('index.html')
         return render_template('memory_test.html', length=MINMEMORY)
 
 
@@ -538,13 +554,14 @@ def memory_begin():
 @app.route('/memory_test', methods=['POST', 'GET'])
 def memory_test():
     if request.method == 'GET':
-        return render_template('index.html')
-    elif request.method == 'POST':
         # 获取记录
-        childID = int(request.form.get('childID'))
-        length = int(request.form.get('length'))
-        is_correct = int(request.form.get('correct'))
-        time = request.form.get('time')
+        childID = int(request.args.get('childID'))
+        length = int(request.args.get('length'))
+        is_correct = int(request.args.get('correct'))
+        time = request.args.get('time')
+
+        if (childID == None or length == None):
+            return render_template('index.html')
 
         child = session.query(Child).filter_by(id=childID).one()
 
