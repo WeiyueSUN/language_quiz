@@ -618,4 +618,8 @@ def memory_test():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port=8000)
+    while(1):
+        try:
+            app.run(host='0.0.0.0', port=8000, threaded=True)
+        except:
+            continue
