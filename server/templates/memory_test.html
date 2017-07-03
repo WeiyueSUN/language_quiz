@@ -109,7 +109,7 @@
         $(audio).attr('src', 'static/resource/audio_num/' + sequence[0] + '.mp3');
         now_pos++;
 
-        audio.addEventListener("loadeddata",
+        audio.addEventListener("canplaythrough",
             function () {
                 $('#music_label').attr('class', 'glyphicon glyphicon-play');
                 $('#music_label').html('');
